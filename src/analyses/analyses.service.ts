@@ -61,12 +61,15 @@ export class AnalysesService {
     );
   }
 
+  /**
+   * Performs the analysis based on the matchData received.
+   * @param matchData: game data based on MatchDto received when querying the Twisted API
+   */
   performMatchAnalysis = async (matchData: MatchDto): Promise<Analysis> => {
     const players: Player[] = [];
     const teams: Team[] = [];
 
     for (const e of matchData.participants) {
-      // Participant-related information
       const participant = {};
 
       const identity: MatchParticipantsIdentitiesDto =
