@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# How is this not included in default gitignores?
+.env
+
 # Logs
 logs
 *.log
