@@ -3,13 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { Regions } from 'twisted/dist/constants';
 import { LolApi } from 'twisted';
 
+import { Player } from './interfaces/player.interface';
+import { Team } from './interfaces/team.interface';
+import { Analysis } from './interfaces/analysis.interface';
+
 import {
   MatchDto,
   MatchParticipantsIdentitiesDto,
 } from 'twisted/dist/models-dto';
-import { Player } from './interfaces/player.interface';
-import { Team } from './interfaces/team.interface';
-import { Analysis } from './interfaces/analysis.interface';
 
 @Injectable()
 export class AnalysesService {
