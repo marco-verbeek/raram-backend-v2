@@ -18,7 +18,10 @@ export class AccountsService {
   async getVerifiedAccountBySummonerName(
     summonerName: string,
   ): Promise<Account> {
-    return this.accountsRepository.findOne({ summonerName, verified: true });
+    return this.accountsRepository.findOne({
+      summonerName: summonerName,
+      verified: true,
+    });
   }
 
   async getAccountsBySummonerName(summonerName: string): Promise<Account[]> {
@@ -38,6 +41,7 @@ export class AccountsService {
       discordId: discordId,
       summonerName: summonerName,
       summonerId: leagueAccount.response.id,
+      encryptedAccountId: leagueAccount.response.accountId,
       uuid: uuidv4(),
       verified: false,
     });
@@ -65,5 +69,27 @@ export class AccountsService {
       { discordId: account.discordId },
       { verified: verified },
     );
+  }
+
+  async getLastGameId(discordId: string) {
+    const profile = await this.getAccount(discordId);
+
+    if (!profile.verified)
+      return {
+        error: 'Profile not verified',
+      };
+
+    const matchListing = await this.LeagueAPI.Match.list(
+      profile.encryptedAccountId,
+      Regions.EU_WEST,
+      { queue: 450, endIndex: 1 },
+    );
+
+    if (matchListing.response.matches.length === 0)
+      return {
+        error: 'No recent ARAM games found',
+      };
+
+    return matchListing.response.matches[0].gameId;
   }
 }

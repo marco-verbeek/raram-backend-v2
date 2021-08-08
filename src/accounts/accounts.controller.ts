@@ -18,9 +18,12 @@ export class AccountsController {
       await this.accountsService.getAccountsBySummonerName(summonerName);
 
     if (accountsWithName.length !== 0) {
-      return this.accountsService.getVerifiedAccountBySummonerName(
-        summonerName,
-      );
+      const verifiedAccount =
+        await this.accountsService.getVerifiedAccountBySummonerName(
+          summonerName,
+        );
+
+      if (verifiedAccount !== null) return verifiedAccount;
     }
 
     // If there are no accounts linked to discordId, create a new one.
@@ -40,5 +43,15 @@ export class AccountsController {
 
     // call Riot API for verifying third party code with db uuid
     return this.accountsService.checkVerification(account);
+  }
+
+  @Get(':discordId')
+  async getProfile(@Param('discordId') discordId: string) {
+    return this.accountsService.getAccount(discordId);
+  }
+
+  @Get(':discordId/lastgame')
+  async getLastGameId(@Param('discordId') discordId: string) {
+    return this.accountsService.getLastGameId(discordId);
   }
 }
