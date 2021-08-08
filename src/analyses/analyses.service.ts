@@ -24,7 +24,7 @@ export class AnalysesService {
    * @param max The highest amount allowed
    * @returns {number} gain if between min and max, min if lower than min, max if higher than max
    */
-  limit = (gain = 0, min = -4, max = 4) => {
+  limit = (gain = 0, min = -4, max = 4): number => {
     return gain < 0 ? Math.max(min, gain) : Math.min(gain, max);
   };
 
@@ -36,7 +36,7 @@ export class AnalysesService {
    * @param resultMultiplier result of previous operation will be multiplied with resultMultiplier
    * @returns {number} 2-decimal float representing (gain*multiplier) * resultMultiplier
    */
-  calculateGain = (gain, multiplier = 10, resultMultiplier = 1) => {
+  calculateGain = (gain, multiplier = 10, resultMultiplier = 1): number => {
     return this.limit(resultMultiplier * +(multiplier * gain).toFixed(2));
   };
 
@@ -45,7 +45,7 @@ export class AnalysesService {
    * @param value the value you wish to format
    * @returns {number} formatted value
    */
-  format = (value) => {
+  format = (value): number => {
     return parseFloat(value.toFixed(2));
   };
 
@@ -55,7 +55,10 @@ export class AnalysesService {
    * @param participantId function finds identity from this participantId
    * @returns {JSON} representing a summonerDTO (see Riot's API documentation)
    */
-  getParticipantIdentity(matchData: MatchDto, participantId) {
+  getParticipantIdentity(
+    matchData: MatchDto,
+    participantId,
+  ): MatchParticipantsIdentitiesDto {
     return matchData.participantIdentities.find(
       (e: MatchParticipantsIdentitiesDto) => e.participantId === participantId,
     );
