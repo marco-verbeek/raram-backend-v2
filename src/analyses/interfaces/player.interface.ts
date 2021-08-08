@@ -1,0 +1,34 @@
+export interface Player {
+  accountId: string;
+  summonerName: string;
+  championId: number;
+  champion: string;
+  teamId: number;
+  kills: number;
+  deaths: number;
+  assists: number;
+  KP: number;
+  damageDone: number;
+  damageTaken: number;
+  healed: number;
+  doubleKills: number;
+  tripleKills: number;
+  quadraKills: number;
+  pentaKills: number;
+  goldEarned: number;
+  goldSpent: number;
+  totalMinionsKilled: number;
+  firstBloodKill: boolean;
+  longestTimeSpentLiving: number;
+  teamComparedKP: number;
+  teamComparedDeaths: number;
+  teamComparedDamageDone: number;
+  teamComparedDamageTaken: number;
+  teamComparedHealed: number;
+  KPGain: number;
+  deathsGain: number;
+  damageDoneGain: number;
+  damageTakenGain: number;
+  healedGain: number;
+  lpGain: number;
+}
