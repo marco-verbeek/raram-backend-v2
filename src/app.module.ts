@@ -6,9 +6,7 @@ import { AnalysesModule } from './analyses/analyses.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://Marco:AqzFIG07eWXBJTE8@raram-backend.lrxzg.mongodb.net/db?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     UsersModule,
     AnalysesModule,
   ],
