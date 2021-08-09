@@ -1,5 +1,7 @@
+
 <p align="center">
-Spare-time created tool that analyses League of Legends ARAM games. Uses the official Riot API in order to get match data.
+<a href="https://www.codefactor.io/repository/github/marco-verbeek/raram-backend-v2" target="_blank"><img src="https://www.codefactor.io/repository/github/marco-verbeek/raram-backend-v2/badge"/></a>
+<br>Spare-time created tool that analyses League of Legends ARAM games. Uses the official Riot API in order to get match data.
 </p>
 
 ## Account Verification
