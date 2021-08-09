@@ -24,7 +24,9 @@ GET /analyses/:gameId
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project makes use of: <br>
+[Nest](https://github.com/nestjs/nest) <br>
+[MongoDB](https://www.mongodb.com/) 
 
 ## Installation
 
