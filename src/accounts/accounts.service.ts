@@ -39,7 +39,7 @@ export class AccountsService {
 
     return this.accountsRepository.create({
       discordId: discordId,
-      summonerName: summonerName,
+      summonerName: leagueAccount.response.name,
       summonerId: leagueAccount.response.id,
       encryptedAccountId: leagueAccount.response.accountId,
       uuid: uuidv4(),
