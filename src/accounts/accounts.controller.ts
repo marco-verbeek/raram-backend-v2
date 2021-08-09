@@ -13,6 +13,10 @@ export class AccountsController {
   ) {
     const account: Account = await this.accountsService.getAccount(discordId);
 
+    // if an account with that discordId has been found, and no summonerName is passed, verify third party code
+    if (account !== null && !account.verified && summonerName === '')
+      return this.accountsService.checkVerification(account);
+
     // Cannot link account to an already-linked LoL account.
     const accountsWithName =
       await this.accountsService.getAccountsBySummonerName(summonerName);

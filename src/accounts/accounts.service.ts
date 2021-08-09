@@ -90,6 +90,6 @@ export class AccountsService {
         error: 'No recent ARAM games found',
       };
 
-    return matchListing.response.matches[0].gameId;
+    return { matchId: matchListing.response.matches[0].gameId };
   }
 }
