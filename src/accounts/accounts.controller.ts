@@ -13,10 +13,6 @@ export class AccountsController {
   ) {
     const account: Account = await this.accountsService.getAccount(discordId);
 
-    // if an account with that discordId has been found, and no summonerName is passed, verify third party code
-    if (account !== null && !account.verified && summonerName === '')
-      return this.accountsService.checkVerification(account);
-
     // Cannot link account to an already-linked LoL account.
     const accountsWithName =
       await this.accountsService.getAccountsBySummonerName(summonerName);
@@ -47,6 +43,22 @@ export class AccountsController {
 
     // call Riot API for verifying third party code with db uuid
     return this.accountsService.checkVerification(account);
+  }
+
+  @Get('/verify/:discordId')
+  async verification2(@Param('discordId') discordId: string) {
+    const account: Account = await this.accountsService.getAccount(discordId);
+
+    if (account === null) {
+      return {
+        error: 'There is no account linked to this discordId to verify.',
+      };
+    }
+
+    if (!account.verified)
+      return this.accountsService.checkVerification(account);
+
+    return account;
   }
 
   @Get(':discordId')
