@@ -8,6 +8,7 @@ import { AccountsModule } from './accounts/accounts.module';
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URL, {
       useFindAndModify: false,
+      useCreateIndex: true,
     }),
     AnalysesModule,
     AccountsModule,
