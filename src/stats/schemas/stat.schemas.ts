@@ -1,27 +1,32 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+export type StatDocument = Stat & Document;
 
 @Schema()
 export class Stat {
   @Prop({ unique: true })
   discordId!: string;
 
-  @Prop()
+  @Prop({ default: 0 })
   rankedGames: number;
 
-  @Prop()
+  @Prop({ default: 0 })
   doubleKills: number;
-  @Prop()
+  @Prop({ default: 0 })
   tripleKills: number;
-  @Prop()
+  @Prop({ default: 0 })
   quadraKills: number;
-  @Prop()
+  @Prop({ default: 0 })
   pentaKills: number;
 
-  @Prop()
+  @Prop({ default: 0 })
   goldEarned: number;
-  @Prop()
+  @Prop({ default: 0 })
   goldSpent: number;
 
-  @Prop()
+  @Prop({ default: 0 })
   timeSpentAlive: number;
 }
+
+export const StatSchema = SchemaFactory.createForClass(Stat);

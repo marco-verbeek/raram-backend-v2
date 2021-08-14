@@ -1,10 +1,14 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { Account } from './schemas/account.schema';
+import { StatsService } from '../stats/stats.service';
 
 @Controller('accounts')
 export class AccountsController {
-  constructor(private readonly accountsService: AccountsService) {}
+  constructor(
+    private readonly accountsService: AccountsService,
+    private readonly statsService: StatsService,
+  ) {}
 
   @Get('/verify/:discordId/:summonerName')
   async verification(
@@ -69,5 +73,12 @@ export class AccountsController {
   @Get(':discordId/lastgame')
   async getLastGameId(@Param('discordId') discordId: string) {
     return this.accountsService.getLastGameId(discordId);
+  }
+
+  @Get(':discordId/stats')
+  async getAccountStats(@Param('discordId') discordId: string) {
+    const stats = await this.statsService.getAccountStats(discordId);
+
+    return this.statsService.updateAccountStats(discordId);
   }
 }
