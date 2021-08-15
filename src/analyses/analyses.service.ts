@@ -66,6 +66,25 @@ export class AnalysesService {
   }
 
   /**
+   * Returns the champion name by champion id. Uses Twisted, and returns 'Unknown' if not found.
+   * @param championId the id representing which champion we're looking for
+   */
+  async getChampionName(championId: number): Promise<string> {
+    try {
+      const champion = await this.LeagueAPI.DataDragon.getChampion(championId);
+      return champion.name;
+    } catch (e) {
+      console.log(
+        'Could not find champion with ID ' +
+          championId +
+          '. Therefore, I returned Unknown.',
+      );
+
+      return 'Unknown';
+    }
+  }
+
+  /**
    * Performs the analysis based on the matchData received.
    * @param matchData: game data based on MatchDto received when querying the Twisted API
    */
@@ -83,10 +102,8 @@ export class AnalysesService {
       participant['summonerName'] = identity['player']['summonerName'];
 
       participant['championId'] = e['championId'];
-      const champion = await this.LeagueAPI.DataDragon.getChampion(
-        e.championId,
-      );
-      participant['champion'] = champion.name;
+
+      participant['champion'] = await this.getChampionName(e['championId']);
       participant['teamId'] = e['teamId'];
 
       participant['kills'] = e['stats']['kills'];
