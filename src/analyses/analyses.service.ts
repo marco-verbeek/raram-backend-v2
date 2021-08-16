@@ -11,9 +11,12 @@ import {
   MatchDto,
   MatchParticipantsIdentitiesDto,
 } from 'twisted/dist/models-dto';
+import { AccountsService } from '../accounts/accounts.service';
+import { Account } from '../accounts/schemas/account.schema';
 
 @Injectable()
 export class AnalysesService {
+  constructor(private readonly accountsService: AccountsService) {}
   LeagueAPI = new LolApi();
 
   /**
@@ -231,15 +234,31 @@ export class AnalysesService {
    * Adds every players' data to the database, if the player has a rARAM account.
    * @param analysis the game analysis containing every players' data
    */
-  addAnalysisToDb = (analysis: Analysis): void => {
+  addAnalysisToDb = async (analysis: Analysis): Promise<void> => {
+    const gameId: number = analysis.game.gameId;
     const players: Player[] = analysis.players;
 
     // get which ones have a raram account
     // add their game stats to the db
 
-    players.forEach((player) => {
-      //const hasAccount =
-    });
+    for (const player of players) {
+      const account: Account =
+        await this.accountsService.getVerifiedAccountBySummonerName(
+          player.summonerName,
+        );
+
+      if (account !== null && gameId in account.analyzedGameIds) {
+        console.log(
+          'This game would have been added to db for player ' +
+            player.summonerName,
+        );
+      } else {
+        console.log(
+          'Game has already been analyzed OR player has no rARAM account: ',
+          player.summonerName,
+        );
+      }
+    }
   };
 
   async analyseGameWithId(gameId: number): Promise<Analysis> {
