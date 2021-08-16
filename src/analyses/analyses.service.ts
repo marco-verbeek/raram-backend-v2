@@ -270,6 +270,7 @@ export class AnalysesService {
         quadraKills: player.quadraKills,
         tripleKills: player.tripleKills,
         win: player.teamId === winningTeamId,
+        leaguePoints: player.lpGain,
       };
 
       await this.statsService.updateAccountStats(account.discordId, stats);

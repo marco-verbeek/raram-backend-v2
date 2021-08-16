@@ -1,5 +1,6 @@
 export class UpdateStatsDto {
   win: boolean;
+  leaguePoints: number;
 
   doubleKills: number;
   tripleKills: number;
