@@ -12,7 +12,10 @@ export class StatsService {
     return stats !== null ? stats : this.statsRepository.create(discordId);
   }
 
-  async updateAccountStats(discordId: string): Promise<Stat> {
-    return this.statsRepository.findOneAndIncrement(discordId, {});
+  async updateAccountStats(
+    discordId: string,
+    stats: Partial<Stat>,
+  ): Promise<Stat> {
+    return this.statsRepository.findOneAndIncrement(discordId, stats);
   }
 }

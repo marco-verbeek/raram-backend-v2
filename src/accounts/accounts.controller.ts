@@ -77,8 +77,6 @@ export class AccountsController {
 
   @Get(':discordId/stats')
   async getAccountStats(@Param('discordId') discordId: string) {
-    const stats = await this.statsService.getAccountStats(discordId);
-
-    return this.statsService.updateAccountStats(discordId);
+    return this.statsService.getAccountStats(discordId);
   }
 }
