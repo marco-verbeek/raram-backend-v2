@@ -245,6 +245,13 @@ export class AnalysesService {
         );
 
       if (account !== null && !(gameId in account.analyzedGameIds)) {
+        // add gameId to account's analyzedGameIds
+        await this.accountsService.addAnalyzedGameIdToProfile(
+          account.discordId,
+          gameId,
+        );
+        // increment player stats
+
         console.log(
           'This game would have been added to db for player ' +
             player.summonerName,

@@ -23,8 +23,8 @@ export class Account {
   @Prop({ required: true })
   uuid: string;
 
-  @Prop({ default: [], type: [String] })
-  analyzedGameIds: string[];
+  @Prop({ default: [], type: [Number] })
+  analyzedGameIds: number[];
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

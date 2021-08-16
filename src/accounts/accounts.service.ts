@@ -58,6 +58,13 @@ export class AccountsService {
     );
   }
 
+  async addAnalyzedGameIdToProfile(
+    discordId: string,
+    gameId: number,
+  ): Promise<Account> {
+    return this.accountsRepository.addAnalyzedGameId(discordId, gameId);
+  }
+
   async checkVerification(account: Account): Promise<Account> {
     const playerCode = await this.LeagueAPI.ThirdPartyCode.get(
       account.summonerId,

@@ -36,4 +36,12 @@ export class AccountsRepository {
       new: true,
     });
   }
+
+  async addAnalyzedGameId(discordId: string, gameId: number): Promise<Account> {
+    return this.accountModel.findOneAndUpdate(
+      { discordId: discordId },
+      { $push: { analyzedGameIds: gameId } },
+      { new: true },
+    );
+  }
 }
