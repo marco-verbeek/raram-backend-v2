@@ -44,6 +44,7 @@ export class AccountsService {
       encryptedAccountId: leagueAccount.response.accountId,
       uuid: uuidv4(),
       verified: false,
+      analyzedGameIds: [],
     });
   }
 
