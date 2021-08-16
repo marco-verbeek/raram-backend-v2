@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { StatsRepository } from './stats.repository';
 import { Stat } from './schemas/stat.schemas';
+import { UpdateStatsDto } from './dto/update-stats.dto';
 
 @Injectable()
 export class StatsService {
@@ -14,7 +15,7 @@ export class StatsService {
 
   async updateAccountStats(
     discordId: string,
-    stats: Partial<Stat>,
+    stats: UpdateStatsDto,
   ): Promise<Stat> {
     return this.statsRepository.findOneAndIncrement(discordId, stats);
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Stat, StatDocument } from './schemas/stat.schemas';
+import { UpdateStatsDto } from './dto/update-stats.dto';
 
 @Injectable()
 export class StatsRepository {
@@ -20,20 +21,21 @@ export class StatsRepository {
 
   async findOneAndIncrement(
     discordId: string,
-    stats: Partial<Stat>,
+    stats: UpdateStatsDto,
   ): Promise<Stat> {
     return this.statModel.findOneAndUpdate(
       { discordId: discordId },
       {
         $inc: {
           rankedGames: 1,
-          doubleKills: stats.doubleKills || 0,
-          tripleKills: stats.tripleKills || 0,
-          quadraKills: stats.quadraKills || 0,
-          pentaKills: stats.pentaKills || 0,
-          goldEarned: stats.goldEarned || 0,
-          goldSpent: stats.goldSpent || 0,
-          timeSpentAlive: stats.timeSpentAlive || 0,
+          wins: stats.win ? 1 : 0,
+          doubleKills: stats.doubleKills,
+          tripleKills: stats.tripleKills,
+          quadraKills: stats.quadraKills,
+          pentaKills: stats.pentaKills,
+          goldEarned: stats.goldEarned,
+          goldSpent: stats.goldSpent,
+          timeSpentAlive: stats.timeSpentAlive,
         },
       },
       {

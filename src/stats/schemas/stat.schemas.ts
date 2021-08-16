@@ -10,6 +10,8 @@ export class Stat {
 
   @Prop({ default: 0 })
   rankedGames: number;
+  @Prop({ default: 0 })
+  wins: number;
 
   @Prop({ default: 0 })
   doubleKills: number;
