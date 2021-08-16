@@ -238,16 +238,13 @@ export class AnalysesService {
     const gameId: number = analysis.game.gameId;
     const players: Player[] = analysis.players;
 
-    // get which ones have a raram account
-    // add their game stats to the db
-
     for (const player of players) {
       const account: Account =
         await this.accountsService.getVerifiedAccountBySummonerName(
           player.summonerName,
         );
 
-      if (account !== null && gameId in account.analyzedGameIds) {
+      if (account !== null && !(gameId in account.analyzedGameIds)) {
         console.log(
           'This game would have been added to db for player ' +
             player.summonerName,
