@@ -16,30 +16,32 @@ export class StatsRepository {
   findOne(discordId: string): Promise<Stat> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.statModel.findOne({ discordId });
+    return this.statModel.findOne({ discordId }).select('-__v -_id');
   }
 
   async findOneAndIncrement(
     discordId: string,
     stats: UpdateStatsDto,
   ): Promise<Stat> {
-    return this.statModel.findOneAndUpdate(
-      { discordId: discordId },
-      {
-        $inc: {
-          rankedGames: 1,
-          wins: stats.win ? 1 : 0,
-          doubleKills: stats.doubleKills,
-          tripleKills: stats.tripleKills,
-          quadraKills: stats.quadraKills,
-          pentaKills: stats.pentaKills,
-          goldEarned: stats.goldEarned,
-          goldSpent: stats.goldSpent,
+    return this.statModel
+      .findOneAndUpdate(
+        { discordId: discordId },
+        {
+          $inc: {
+            rankedGames: 1,
+            wins: stats.win ? 1 : 0,
+            doubleKills: stats.doubleKills,
+            tripleKills: stats.tripleKills,
+            quadraKills: stats.quadraKills,
+            pentaKills: stats.pentaKills,
+            goldEarned: stats.goldEarned,
+            goldSpent: stats.goldSpent,
+          },
         },
-      },
-      {
-        new: true,
-      },
-    );
+        {
+          new: true,
+        },
+      )
+      .select('-__v -_id');
   }
 }

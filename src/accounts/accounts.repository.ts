@@ -12,13 +12,13 @@ export class AccountsRepository {
   async findOne(accountFilterQuery: FilterQuery<Account>): Promise<Account> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.accountModel.findOne(accountFilterQuery);
+    return this.accountModel.findOne(accountFilterQuery).select('-__v -_id');
   }
 
   async findMany(accountFilterQuery: FilterQuery<Account>): Promise<Account[]> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.accountModel.find(accountFilterQuery);
+    return this.accountModel.find(accountFilterQuery).select('-__v -_id');
   }
 
   create(account: Account): Promise<Account> {
@@ -27,21 +27,23 @@ export class AccountsRepository {
   }
 
   async findOneAndUpdate(
-    accountFilterQuery: FilterQuery<Account>,
+    discordId: string,
     account: Partial<Account>,
   ): Promise<Account> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this.accountModel.findOneAndUpdate(accountFilterQuery, account, {
-      new: true,
-    });
+    return this.accountModel
+      .findOneAndUpdate({ discordId: discordId }, account, {
+        new: true,
+      })
+      .select('-__v -_id');
   }
 
   async addAnalyzedGameId(discordId: string, gameId: number): Promise<Account> {
-    return this.accountModel.findOneAndUpdate(
-      { discordId: discordId },
-      { $push: { analyzedGameIds: gameId } },
-      { new: true },
-    );
+    return this.accountModel
+      .findOneAndUpdate(
+        { discordId: discordId },
+        { $push: { analyzedGameIds: gameId } },
+        { new: true },
+      )
+      .select('-__v -_id');
   }
 }

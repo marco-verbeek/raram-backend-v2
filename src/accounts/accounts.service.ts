@@ -52,10 +52,11 @@ export class AccountsService {
     discordId: string,
     summonerName: string,
   ): Promise<Account> {
-    return this.accountsRepository.findOneAndUpdate(
-      { discordId: discordId },
-      { summonerName: summonerName, uuid: uuidv4(), verified: false },
-    );
+    return this.accountsRepository.findOneAndUpdate(discordId, {
+      summonerName: summonerName,
+      uuid: uuidv4(),
+      verified: false,
+    });
   }
 
   async addAnalyzedGameIdToProfile(
@@ -73,10 +74,9 @@ export class AccountsService {
 
     const verified = playerCode.response.code === account.uuid;
 
-    return this.accountsRepository.findOneAndUpdate(
-      { discordId: account.discordId },
-      { verified: verified },
-    );
+    return this.accountsRepository.findOneAndUpdate(account.discordId, {
+      verified: verified,
+    });
   }
 
   async getLastGameId(discordId: string) {
