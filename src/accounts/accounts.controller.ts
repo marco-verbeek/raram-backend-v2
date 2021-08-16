@@ -32,6 +32,7 @@ export class AccountsController {
 
     // If there are no accounts linked to discordId, create a new one.
     if (account === null || account === undefined) {
+      await this.statsService.createAccountStats(discordId);
       return this.accountsService.createAccount(discordId, summonerName);
     }
 
