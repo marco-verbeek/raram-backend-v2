@@ -35,7 +35,6 @@ export class StatsRepository {
           pentaKills: stats.pentaKills,
           goldEarned: stats.goldEarned,
           goldSpent: stats.goldSpent,
-          timeSpentAlive: stats.timeSpentAlive,
         },
       },
       {

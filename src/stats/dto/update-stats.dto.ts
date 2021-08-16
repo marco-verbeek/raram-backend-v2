@@ -8,6 +8,4 @@ export class UpdateStatsDto {
 
   goldEarned: number;
   goldSpent: number;
-
-  timeSpentAlive: number;
 }

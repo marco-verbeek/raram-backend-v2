@@ -26,9 +26,6 @@ export class Stat {
   goldEarned: number;
   @Prop({ default: 0 })
   goldSpent: number;
-
-  @Prop({ default: 0 })
-  timeSpentAlive: number;
 }
 
 export const StatSchema = SchemaFactory.createForClass(Stat);

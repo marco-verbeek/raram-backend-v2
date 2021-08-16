@@ -24,6 +24,6 @@ import { StatsRepository } from '../stats/stats.repository';
     StatsService,
     StatsRepository,
   ],
-  exports: [AccountsService, AccountsRepository],
+  exports: [AccountsService, AccountsRepository, StatsService, StatsRepository],
 })
 export class AccountsModule {}

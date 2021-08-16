@@ -13,10 +13,15 @@ import {
 } from 'twisted/dist/models-dto';
 import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
+import { StatsService } from '../stats/stats.service';
+import { UpdateStatsDto } from '../stats/dto/update-stats.dto';
 
 @Injectable()
 export class AnalysesService {
-  constructor(private readonly accountsService: AccountsService) {}
+  constructor(
+    private readonly accountsService: AccountsService,
+    private readonly statsService: StatsService,
+  ) {}
   LeagueAPI = new LolApi();
 
   /**
@@ -236,6 +241,10 @@ export class AnalysesService {
    */
   addAnalysisToDb = async (analysis: Analysis): Promise<void> => {
     const gameId: number = analysis.game.gameId;
+    const winningTeamId: number = analysis.teams.find(
+      (team) => team.win,
+    ).teamId;
+
     const players: Player[] = analysis.players;
 
     for (const player of players) {
@@ -244,24 +253,27 @@ export class AnalysesService {
           player.summonerName,
         );
 
-      if (account !== null && !(gameId in account.analyzedGameIds)) {
-        // add gameId to account's analyzedGameIds
-        await this.accountsService.addAnalyzedGameIdToProfile(
-          account.discordId,
-          gameId,
-        );
-        // increment player stats
+      // No rARAM account or game already previously analyzed.
+      if (account === null || account.analyzedGameIds.indexOf(gameId) > -1)
+        continue;
 
-        console.log(
-          'This game would have been added to db for player ' +
-            player.summonerName,
-        );
-      } else {
-        console.log(
-          'Game has already been analyzed OR player has no rARAM account: ',
-          player.summonerName,
-        );
-      }
+      await this.accountsService.addAnalyzedGameIdToProfile(
+        account.discordId,
+        gameId,
+      );
+
+      const stats: UpdateStatsDto = {
+        doubleKills: player.doubleKills,
+        goldEarned: player.goldEarned,
+        goldSpent: player.goldSpent,
+        pentaKills: player.pentaKills,
+        quadraKills: player.quadraKills,
+        tripleKills: player.tripleKills,
+        win: player.teamId === winningTeamId,
+      };
+
+      await this.statsService.updateAccountStats(account.discordId, stats);
+      console.log('Updated stats for ' + player.summonerName);
     }
   };
 
@@ -269,7 +281,7 @@ export class AnalysesService {
     const match = await this.LeagueAPI.Match.get(gameId, Regions.EU_WEST);
     const analysis = await this.performMatchAnalysis(match.response);
 
-    this.addAnalysisToDb(analysis);
+    await this.addAnalysisToDb(analysis);
 
     return analysis;
   }
