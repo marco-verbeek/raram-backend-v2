@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type AccountDocument = Account & Document;
 
@@ -22,6 +22,9 @@ export class Account {
 
   @Prop({ required: true })
   uuid: string;
+
+  @Prop({ default: [], type: [String] })
+  analyzedGameIds: string[];
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

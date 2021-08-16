@@ -227,8 +227,27 @@ export class AnalysesService {
     };
   };
 
+  /**
+   * Adds every players' data to the database, if the player has a rARAM account.
+   * @param analysis the game analysis containing every players' data
+   */
+  addAnalysisToDb = (analysis: Analysis): void => {
+    const players: Player[] = analysis.players;
+
+    // get which ones have a raram account
+    // add their game stats to the db
+
+    players.forEach((player) => {
+      //const hasAccount =
+    });
+  };
+
   async analyseGameWithId(gameId: number): Promise<Analysis> {
     const match = await this.LeagueAPI.Match.get(gameId, Regions.EU_WEST);
-    return this.performMatchAnalysis(match.response);
+    const analysis = await this.performMatchAnalysis(match.response);
+
+    this.addAnalysisToDb(analysis);
+
+    return analysis;
   }
 }
