@@ -9,4 +9,8 @@ export class UpdateStatsDto {
 
   goldEarned: number;
   goldSpent: number;
+
+  damageDealt: number;
+  damageTaken: number;
+  healed: number;
 }

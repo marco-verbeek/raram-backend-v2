@@ -30,12 +30,16 @@ export class StatsRepository {
           $inc: {
             rankedGames: 1,
             wins: stats.win ? 1 : 0,
+            leaguePoints: stats.leaguePoints,
             doubleKills: stats.doubleKills,
             tripleKills: stats.tripleKills,
             quadraKills: stats.quadraKills,
             pentaKills: stats.pentaKills,
             goldEarned: stats.goldEarned,
             goldSpent: stats.goldSpent,
+            damageDealt: stats.damageDealt,
+            damageTaken: stats.damageTaken,
+            healed: stats.healed,
           },
         },
         {
