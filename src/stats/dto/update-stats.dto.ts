@@ -2,13 +2,19 @@ export class UpdateStatsDto {
   win: boolean;
   leaguePoints: number;
 
+  goldEarned: number;
+  goldSpent: number;
+
+  kills: number;
+  deaths: number;
+  assists: number;
+
+  firstBloodKill: boolean;
+
   doubleKills: number;
   tripleKills: number;
   quadraKills: number;
   pentaKills: number;
-
-  goldEarned: number;
-  goldSpent: number;
 
   damageDealt: number;
   damageTaken: number;

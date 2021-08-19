@@ -263,14 +263,25 @@ export class AnalysesService {
       );
 
       const stats: UpdateStatsDto = {
-        doubleKills: player.doubleKills,
-        goldEarned: player.goldEarned,
-        goldSpent: player.goldSpent,
-        pentaKills: player.pentaKills,
-        quadraKills: player.quadraKills,
-        tripleKills: player.tripleKills,
         win: player.teamId === winningTeamId,
         leaguePoints: player.lpGain,
+
+        goldEarned: player.goldEarned,
+        goldSpent: player.goldSpent,
+
+        kills: player.kills,
+        deaths: player.deaths,
+        assists: player.assists,
+        firstBloodKill: player.firstBloodKill,
+
+        doubleKills: player.doubleKills,
+        tripleKills: player.tripleKills,
+        quadraKills: player.quadraKills,
+        pentaKills: player.pentaKills,
+
+        damageDealt: player.damageDone,
+        damageTaken: player.damageTaken,
+        healed: player.healed,
       };
 
       await this.statsService.updateAccountStats(account.discordId, stats);

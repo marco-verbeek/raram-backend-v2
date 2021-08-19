@@ -16,6 +16,21 @@ export class Stat {
   leaguePoints: number;
 
   @Prop({ default: 0 })
+  goldEarned: number;
+  @Prop({ default: 0 })
+  goldSpent: number;
+
+  @Prop({ default: 0 })
+  kills: number;
+  @Prop({ default: 0 })
+  deaths: number;
+  @Prop({ default: 0 })
+  assists: number;
+
+  @Prop({ default: 0 })
+  firstBloods: number;
+
+  @Prop({ default: 0 })
   doubleKills: number;
   @Prop({ default: 0 })
   tripleKills: number;
@@ -23,11 +38,6 @@ export class Stat {
   quadraKills: number;
   @Prop({ default: 0 })
   pentaKills: number;
-
-  @Prop({ default: 0 })
-  goldEarned: number;
-  @Prop({ default: 0 })
-  goldSpent: number;
 
   @Prop({ default: 0 })
   damageDealt: number;
