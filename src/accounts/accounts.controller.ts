@@ -76,13 +76,13 @@ export class AccountsController {
     return this.accountsService.getLastGameId(discordId);
   }
 
-  @Get(':discordId/stats')
+  @Get(':discordId/profile')
   async getAccountStats(@Param('discordId') discordId: string) {
     const account = await this.accountsService.getAccount(discordId);
     const stats = await this.statsService.getAccountStats(discordId);
 
     // TODO: if account === null, return 404 profile not found.
 
-    return { summonerName: account.summonerName, ...stats };
+    return { summonerName: account.summonerName, stats: stats };
   }
 }
