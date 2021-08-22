@@ -219,7 +219,7 @@ export class AnalysesService {
       );
       player['healedGain'] = this.calculateGain(player['teamComparedHealed']);
 
-      player['lpGain'] = this.format(
+      const lpGain = this.format(
         (team['win'] ? 10 : -10) +
           player['KPGain'] +
           player['deathsGain'] +
@@ -229,6 +229,13 @@ export class AnalysesService {
             player['healedGain'],
           ),
       );
+
+      player['lpGain'] = lpGain;
+
+      // Note: player stats have not yet been updated here!
+      // This game has not yet been accounted for: add lpGain to current leaguePoints!
+      const stats = await this.statsService.getAccountStats(account.discordId);
+      player['leaguePoints'] = stats.leaguePoints + lpGain;
     }
 
     return {

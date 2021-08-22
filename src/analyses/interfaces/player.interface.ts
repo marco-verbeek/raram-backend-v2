@@ -31,4 +31,5 @@ export interface Player {
   damageTakenGain: number;
   healedGain: number;
   lpGain: number;
+  leaguePoints: number;
 }
