@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type StatDocument = Stat & Document;
+export type PlayerDocument = Player & Document;
 
 @Schema()
-export class Stat {
+export class Player {
   @Prop({ unique: true })
   discordId!: string;
 
@@ -47,4 +47,4 @@ export class Stat {
   healed: number;
 }
 
-export const StatSchema = SchemaFactory.createForClass(Stat);
+export const PlayerSchema = SchemaFactory.createForClass(Player);

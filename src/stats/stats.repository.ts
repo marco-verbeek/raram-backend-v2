@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Stat, StatDocument } from './schemas/stat.schemas';
+import { Player, PlayerDocument } from './schemas/player.schemas';
 import { UpdateStatsDto } from './dto/update-stats.dto';
 
 @Injectable()
 export class StatsRepository {
-  constructor(@InjectModel(Stat.name) private statModel: Model<StatDocument>) {}
+  constructor(@InjectModel(Player.name) private statModel: Model<PlayerDocument>) {}
 
-  create(discordId: string): Promise<Stat> {
+  create(discordId: string): Promise<Player> {
     const newStats = new this.statModel({ discordId });
     return newStats.save();
   }
 
-  findOne(discordId: string): Promise<Stat> {
+  findOne(discordId: string): Promise<Player> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return this.statModel.findOne({ discordId }).select('-__v -_id');
@@ -22,7 +22,7 @@ export class StatsRepository {
   async findOneAndIncrement(
     discordId: string,
     stats: UpdateStatsDto,
-  ): Promise<Stat> {
+  ): Promise<Player> {
     return this.statModel
       .findOneAndUpdate(
         { discordId: discordId },
