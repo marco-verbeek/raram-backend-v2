@@ -14,7 +14,9 @@ export class StatsService {
   async getAccountStats(discordId: string): Promise<Player> {
     const stats = await this.statsRepository.findPlayer(discordId);
 
-    return stats !== null ? stats : this.statsRepository.createPlayer(discordId);
+    return stats !== null
+      ? stats
+      : this.statsRepository.createPlayer(discordId);
   }
 
   async updateAccountStats(
