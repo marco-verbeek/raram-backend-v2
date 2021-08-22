@@ -7,25 +7,25 @@ import { UpdateStatsDto } from './dto/update-stats.dto';
 @Injectable()
 export class StatsRepository {
   constructor(
-    @InjectModel(Player.name) private statModel: Model<PlayerDocument>,
+    @InjectModel(Player.name) private playerStatsModel: Model<PlayerDocument>,
   ) {}
 
-  create(discordId: string): Promise<Player> {
-    const newStats = new this.statModel({ discordId });
+  createPlayer(discordId: string): Promise<Player> {
+    const newStats = new this.playerStatsModel({ discordId });
     return newStats.save();
   }
 
-  findOne(discordId: string): Promise<Player> {
+  findPlayer(discordId: string): Promise<Player> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.statModel.findOne({ discordId }).select('-__v -_id');
+    return this.playerStatsModel.findOne({ discordId }).select('-__v -_id');
   }
 
-  async findOneAndIncrement(
+  async incrementPlayerStats(
     discordId: string,
     stats: UpdateStatsDto,
   ): Promise<Player> {
-    return this.statModel
+    return this.playerStatsModel
       .findOneAndUpdate(
         { discordId: discordId },
         {

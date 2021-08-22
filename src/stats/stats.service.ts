@@ -12,15 +12,15 @@ export class StatsService {
   }
 
   async getAccountStats(discordId: string): Promise<Player> {
-    const stats = await this.statsRepository.findOne(discordId);
+    const stats = await this.statsRepository.findPlayer(discordId);
 
-    return stats !== null ? stats : this.statsRepository.create(discordId);
+    return stats !== null ? stats : this.statsRepository.createPlayer(discordId);
   }
 
   async updateAccountStats(
     discordId: string,
     stats: UpdateStatsDto,
   ): Promise<Player> {
-    return this.statsRepository.findOneAndIncrement(discordId, stats);
+    return this.statsRepository.incrementPlayerStats(discordId, stats);
   }
 }
