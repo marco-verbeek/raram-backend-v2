@@ -6,7 +6,9 @@ import { UpdateStatsDto } from './dto/update-stats.dto';
 
 @Injectable()
 export class StatsRepository {
-  constructor(@InjectModel(Player.name) private statModel: Model<PlayerDocument>) {}
+  constructor(
+    @InjectModel(Player.name) private statModel: Model<PlayerDocument>,
+  ) {}
 
   create(discordId: string): Promise<Player> {
     const newStats = new this.statModel({ discordId });
