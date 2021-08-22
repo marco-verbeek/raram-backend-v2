@@ -175,7 +175,12 @@ export class AnalysesService {
     });
 
     // Calculate team-comparisons and gains and total LP
-    players.forEach((player) => {
+    for (const player of players) {
+      const account =
+        await this.accountsService.getVerifiedAccountBySummonerName(
+          player.summonerName,
+        );
+
       const team = teams.find((team) => team.teamId === player.teamId);
 
       player['teamComparedKP'] = this.format(
@@ -195,6 +200,9 @@ export class AnalysesService {
       player['teamComparedHealed'] = this.format(
         (player['healed'] - team['avgHealed']) / team['avgHealed'],
       );
+
+      // Only calculate rank-related information if the player has a rARAM account.
+      if (account === null) continue;
 
       player['KPGain'] = this.calculateGain(player['teamComparedKP'], 10, 2);
       player['deathsGain'] = this.calculateGain(
@@ -221,7 +229,7 @@ export class AnalysesService {
             player['healedGain'],
           ),
       );
-    });
+    }
 
     return {
       teams: teams,
