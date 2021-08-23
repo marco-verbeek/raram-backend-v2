@@ -232,10 +232,12 @@ export class AnalysesService {
 
       player['lpGain'] = lpGain;
 
-      // Note: player stats have not yet been updated here!
-      // This game has not yet been accounted for: add lpGain to current leaguePoints!
+      // This game has might not yet have been accounted for: add lpGain to current leaguePoints!
       const stats = await this.statsService.getAccountStats(account.discordId);
-      player['leaguePoints'] = stats.leaguePoints + lpGain;
+      player['leaguePoints'] =
+        account.analyzedGameIds.indexOf(matchData.gameId) > -1
+          ? stats.leaguePoints
+          : stats.leaguePoints + lpGain;
     }
 
     return {
