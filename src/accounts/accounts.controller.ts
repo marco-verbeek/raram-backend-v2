@@ -87,7 +87,6 @@ export class AccountsController {
     }
 
     // TODO: if account === null, return 404 profile not found.
-    // TODO: take verified account only
     const account = accountById !== null ? accountById : accountByName;
     const stats = await this.statsService.getAccountStats(account['discordId']);
 
