@@ -44,7 +44,6 @@ export class AccountsService {
       encryptedAccountId: leagueAccount.response.accountId,
       uuid: uuidv4(),
       verified: false,
-      analyzedGameIds: [],
     });
   }
 
@@ -57,13 +56,6 @@ export class AccountsService {
       uuid: uuidv4(),
       verified: false,
     });
-  }
-
-  async addAnalyzedGameIdToProfile(
-    discordId: string,
-    gameId: number,
-  ): Promise<Account> {
-    return this.accountsRepository.addAnalyzedGameId(discordId, gameId);
   }
 
   async checkVerification(account: Account): Promise<Account> {

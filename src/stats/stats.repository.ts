@@ -3,11 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Player, PlayerDocument } from './schemas/player.schemas';
 import { UpdateStatsDto } from './dto/update-stats.dto';
+import { Tool, ToolDocument } from './schemas/tool.schemas';
+import { Champion, ChampionDocument } from './schemas/champion.schemas';
+import { Account } from '../accounts/schemas/account.schema';
 
 @Injectable()
 export class StatsRepository {
   constructor(
     @InjectModel(Player.name) private playerStatsModel: Model<PlayerDocument>,
+    @InjectModel(Champion.name)
+    private championStatsModel: Model<ChampionDocument>,
+    @InjectModel(Tool.name) private toolStatsModel: Model<ToolDocument>,
   ) {}
 
   createPlayer(discordId: string): Promise<Player> {
@@ -15,9 +21,7 @@ export class StatsRepository {
     return newStats.save();
   }
 
-  findPlayer(discordId: string): Promise<Player> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+  async findPlayer(discordId: string): Promise<Player> {
     return this.playerStatsModel.findOne({ discordId }).select('-__v -_id');
   }
 
@@ -51,6 +55,20 @@ export class StatsRepository {
         {
           new: true,
         },
+      )
+      .select('-__v -_id');
+  }
+
+  async getToolStats(): Promise<Tool> {
+    return this.toolStatsModel.findOne({}).select('-__v -_id');
+  }
+
+  async addGameIdToAnalyzedGames(gameId: number): Promise<Tool> {
+    return this.toolStatsModel
+      .findOneAndUpdate(
+        {},
+        { $push: { analyzedGameIds: gameId } },
+        { new: true },
       )
       .select('-__v -_id');
   }

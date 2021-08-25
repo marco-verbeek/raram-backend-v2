@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { StatsRepository } from './stats.repository';
 import { Player } from './schemas/player.schemas';
 import { UpdateStatsDto } from './dto/update-stats.dto';
+import { Tool } from './schemas/tool.schemas';
 
 @Injectable()
 export class StatsService {
@@ -24,5 +25,14 @@ export class StatsService {
     stats: UpdateStatsDto,
   ): Promise<Player> {
     return this.statsRepository.incrementPlayerStats(discordId, stats);
+  }
+
+  async getAnalyzedGameIds(): Promise<number[]> {
+    const stats = await this.statsRepository.getToolStats();
+    return stats.analyzedGameIds;
+  }
+
+  async addGameIdToAnalyzedGames(gameId: number): Promise<Tool> {
+    return this.statsRepository.addGameIdToAnalyzedGames(gameId);
   }
 }

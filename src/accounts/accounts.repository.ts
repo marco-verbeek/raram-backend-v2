@@ -36,14 +36,4 @@ export class AccountsRepository {
       })
       .select('-__v -_id');
   }
-
-  async addAnalyzedGameId(discordId: string, gameId: number): Promise<Account> {
-    return this.accountModel
-      .findOneAndUpdate(
-        { discordId: discordId },
-        { $push: { analyzedGameIds: gameId } },
-        { new: true },
-      )
-      .select('-__v -_id');
-  }
 }

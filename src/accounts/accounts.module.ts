@@ -9,12 +9,16 @@ import { AccountsRepository } from './accounts.repository';
 import { Player, PlayerSchema } from '../stats/schemas/player.schemas';
 import { StatsService } from '../stats/stats.service';
 import { StatsRepository } from '../stats/stats.repository';
+import { Champion, ChampionSchema } from '../stats/schemas/champion.schemas';
+import { Tool, ToolSchema } from '../stats/schemas/tool.schemas';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Account.name, schema: AccountSchema },
       { name: Player.name, schema: PlayerSchema },
+      { name: Champion.name, schema: ChampionSchema },
+      { name: Tool.name, schema: ToolSchema },
     ]),
   ],
   controllers: [AccountsController],

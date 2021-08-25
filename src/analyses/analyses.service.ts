@@ -100,6 +100,10 @@ export class AnalysesService {
     const players: Player[] = [];
     const teams: Team[] = [];
 
+    const allAnalyzedGameIds = await this.statsService.getAnalyzedGameIds();
+    const gameAlreadyAnalyzed =
+      allAnalyzedGameIds.indexOf(matchData.gameId) > -1;
+
     for (const e of matchData.participants) {
       const participant = {};
 
@@ -234,10 +238,9 @@ export class AnalysesService {
 
       // This game has might not yet have been accounted for: add lpGain to current leaguePoints!
       const stats = await this.statsService.getAccountStats(account.discordId);
-      player['leaguePoints'] =
-        account.analyzedGameIds.indexOf(matchData.gameId) > -1
-          ? stats.leaguePoints
-          : stats.leaguePoints + lpGain;
+      player['leaguePoints'] = gameAlreadyAnalyzed
+        ? stats.leaguePoints
+        : stats.leaguePoints + lpGain;
     }
 
     return {
@@ -258,6 +261,16 @@ export class AnalysesService {
    */
   addAnalysisToDb = async (analysis: Analysis): Promise<void> => {
     const gameId: number = analysis.game.gameId;
+    const allAnalyzedGameIds = await this.statsService.getAnalyzedGameIds();
+
+    // Make sure that this game has not yet been analyzed.
+    if (!(allAnalyzedGameIds.indexOf(gameId) > -1)) {
+      await this.statsService.addGameIdToAnalyzedGames(gameId);
+      console.log(
+        'This game had not yet been added to the DB, and has now been added. This should only trigger once!',
+      );
+    }
+
     const winningTeamId: number = analysis.teams.find(
       (team) => team.win,
     ).teamId;
@@ -270,14 +283,7 @@ export class AnalysesService {
           player.summonerName,
         );
 
-      // No rARAM account or game already previously analyzed.
-      if (account === null || account.analyzedGameIds.indexOf(gameId) > -1)
-        continue;
-
-      await this.accountsService.addAnalyzedGameIdToProfile(
-        account.discordId,
-        gameId,
-      );
+      if (account === null) continue;
 
       const stats: UpdateStatsDto = {
         win: player.teamId === winningTeamId,
@@ -311,6 +317,7 @@ export class AnalysesService {
     const analysis = await this.performMatchAnalysis(match.response);
 
     await this.addAnalysisToDb(analysis);
+    // await this.statsService.incrementAnalyzedGamesByOne();
 
     return analysis;
   }
