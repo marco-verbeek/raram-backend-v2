@@ -82,12 +82,13 @@ export class AccountsController {
     let accountByName;
 
     if (accountById === null) {
-      accountByName = await this.accountsService.getAccountsBySummonerName(id);
+      accountByName =
+        await this.accountsService.getVerifiedAccountBySummonerName(id);
     }
 
     // TODO: if account === null, return 404 profile not found.
     // TODO: take verified account only
-    const account = accountById !== null ? accountById : accountByName[0];
+    const account = accountById !== null ? accountById : accountByName;
     const stats = await this.statsService.getAccountStats(account['discordId']);
 
     return { summonerName: account.summonerName, stats: stats };
