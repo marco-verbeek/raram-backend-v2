@@ -5,7 +5,6 @@ import { Player, PlayerDocument } from './schemas/player.schemas';
 import { UpdateStatsDto } from './dto/update-stats.dto';
 import { Tool, ToolDocument } from './schemas/tool.schemas';
 import { Champion, ChampionDocument } from './schemas/champion.schemas';
-import { Account } from '../accounts/schemas/account.schema';
 
 @Injectable()
 export class StatsRepository {
