@@ -8,7 +8,7 @@ export class Champion {
   @Prop({ unique: true })
   name!: string;
 
-  @Prop()
+  @Prop({ type: Map })
   players: { type: Map<string, number>; of: number };
 
   @Prop({ default: 0 })
