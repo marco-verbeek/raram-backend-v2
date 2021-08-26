@@ -18,10 +18,9 @@ export class AccountsService {
   async getVerifiedAccountBySummonerName(
     summonerName: string,
   ): Promise<Account> {
-    return this.accountsRepository.findOne({
-      summonerName: summonerName,
-      verified: true,
-    });
+    return this.accountsRepository.findVerifiedAccountCaseInsensitive(
+      summonerName,
+    );
   }
 
   async getAccountsBySummonerName(summonerName: string): Promise<Account[]> {

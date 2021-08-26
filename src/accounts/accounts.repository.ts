@@ -9,16 +9,23 @@ export class AccountsRepository {
     @InjectModel(Account.name) private accountModel: Model<AccountDocument>,
   ) {}
 
-  async findOne(accountFilterQuery: FilterQuery<Account>): Promise<Account> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this.accountModel.findOne(accountFilterQuery).select('-__v -_id');
+  async findOne(account: Partial<Account>): Promise<Account> {
+    return this.accountModel.findOne(account).select('-__v -_id');
   }
 
-  async findMany(accountFilterQuery: FilterQuery<Account>): Promise<Account[]> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this.accountModel.find(accountFilterQuery).select('-__v -_id');
+  async findVerifiedAccountCaseInsensitive(
+    summonerName: string,
+  ): Promise<Account> {
+    return this.accountModel
+      .findOne({
+        summonerName: { $regex: '^' + summonerName + '$', $options: 'i' },
+        verified: true,
+      })
+      .select('-__v -_id');
+  }
+
+  async findMany(account: Partial<Account>): Promise<Account[]> {
+    return this.accountModel.find(account).select('-__v -_id');
   }
 
   create(account: Account): Promise<Account> {
