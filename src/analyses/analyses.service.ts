@@ -261,15 +261,14 @@ export class AnalysesService {
    */
   addAnalysisToDb = async (analysis: Analysis): Promise<void> => {
     const gameId: number = analysis.game.gameId;
+
     const allAnalyzedGameIds = await this.statsService.getAnalyzedGameIds();
+    const hasAlreadyBeenAnalyzed = allAnalyzedGameIds.indexOf(gameId) > -1;
 
     // Make sure that this game has not yet been analyzed.
-    if (!(allAnalyzedGameIds.indexOf(gameId) > -1)) {
-      await this.statsService.addGameIdToAnalyzedGames(gameId);
-      console.log(
-        'This game had not yet been added to the DB, and has now been added. This should only trigger once!',
-      );
-    }
+    if (hasAlreadyBeenAnalyzed) return;
+
+    await this.statsService.addGameIdToAnalyzedGames(gameId);
 
     const winningTeamId: number = analysis.teams.find(
       (team) => team.win,
