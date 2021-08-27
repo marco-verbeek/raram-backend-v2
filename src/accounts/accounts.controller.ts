@@ -71,7 +71,7 @@ export class AccountsController {
     return this.accountsService.getAccount(discordId);
   }
 
-  @Get(':discordId/lastgame')
+  @Get(':discordId/last-game')
   async getLastGameId(@Param('discordId') discordId: string) {
     return this.accountsService.getLastGameId(discordId);
   }
