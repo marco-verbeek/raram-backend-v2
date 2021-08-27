@@ -8,7 +8,7 @@ export class Champion {
   @Prop({ unique: true })
   name!: string;
 
-  @Prop({ type: Map })
+  @Prop({ type: Map, of: Number })
   players: { type: Map<string, number>; of: number };
 
   @Prop({ default: 0 })
@@ -20,6 +20,13 @@ export class Champion {
   pentas: number;
   @Prop({ default: 0 })
   totalKP: number;
+
+  @Prop({ default: 0 })
+  totalDamageDone: number;
+  @Prop({ default: 0 })
+  totalDamageTaken: number;
+  @Prop({ default: 0 })
+  totalHealed: number;
 }
 
 export const ChampionSchema = SchemaFactory.createForClass(Champion);

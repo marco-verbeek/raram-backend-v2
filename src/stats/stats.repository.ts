@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Player, PlayerDocument } from './schemas/player.schemas';
-import { UpdateStatsDto } from './dto/update-stats.dto';
+import { UpdatePlayerStatsDto } from './dto/update-player-stats.dto';
 import { Tool, ToolDocument } from './schemas/tool.schemas';
 import { Champion, ChampionDocument } from './schemas/champion.schemas';
+import { UpdateChampStatsDto } from './dto/update-champ-stats.dto';
 
 @Injectable()
 export class StatsRepository {
@@ -26,7 +27,7 @@ export class StatsRepository {
 
   async incrementPlayerStats(
     discordId: string,
-    stats: UpdateStatsDto,
+    stats: UpdatePlayerStatsDto,
   ): Promise<Player> {
     return this.playerStatsModel
       .findOneAndUpdate(
@@ -67,6 +68,41 @@ export class StatsRepository {
       .findOneAndUpdate(
         {},
         { $push: { analyzedGameIds: gameId } },
+        { new: true },
+      )
+      .select('-__v -_id');
+  }
+
+  async createChampionStats(name: string): Promise<Champion> {
+    const newChamp = new this.championStatsModel({ name });
+    return newChamp.save();
+  }
+
+  async getChampionStats(name: string): Promise<Champion> {
+    return this.championStatsModel.findOne({ name }).select('-__v -_id');
+  }
+
+  async incrementChampionStats(
+    name: string,
+    stats: UpdateChampStatsDto,
+  ): Promise<Champion> {
+    const keyName = 'players.' + stats.playedBySummonerName;
+
+    return this.championStatsModel
+      .findOneAndUpdate(
+        { name },
+        {
+          $inc: {
+            gamesPlayed: 1,
+            gamesWon: stats.win ? 1 : 0,
+            pentas: stats.pentas,
+            totalKP: stats.totalKP,
+            totalDamageDone: stats.totalDamageDone,
+            totalDamageTaken: stats.totalDamageTaken,
+            totalHealed: stats.totalHealed,
+            [keyName]: 1,
+          },
+        },
         { new: true },
       )
       .select('-__v -_id');

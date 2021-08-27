@@ -14,7 +14,8 @@ import {
 import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
 import { StatsService } from '../stats/stats.service';
-import { UpdateStatsDto } from '../stats/dto/update-stats.dto';
+import { UpdatePlayerStatsDto } from '../stats/dto/update-player-stats.dto';
+import { Champion } from '../stats/schemas/champion.schemas';
 
 @Injectable()
 export class AnalysesService {
@@ -284,7 +285,7 @@ export class AnalysesService {
 
       if (account === null) continue;
 
-      const stats: UpdateStatsDto = {
+      const stats: UpdatePlayerStatsDto = {
         win: player.teamId === winningTeamId,
         leaguePoints: player.lpGain,
 
@@ -308,6 +309,17 @@ export class AnalysesService {
 
       await this.statsService.updateAccountStats(account.discordId, stats);
       console.log('Updated stats for ' + player.summonerName);
+
+      await this.statsService.updateChampionStats(player.champion, {
+        playedBySummonerName: player.summonerName,
+        win: player.teamId === winningTeamId,
+        totalKP: player.kills + player.assists,
+        pentas: player.pentaKills,
+        totalDamageDone: player.damageDone,
+        totalDamageTaken: player.damageTaken,
+        totalHealed: player.healed,
+      });
+      console.log('Update champion stats for ' + player.champion);
     }
   };
 
@@ -316,7 +328,6 @@ export class AnalysesService {
     const analysis = await this.performMatchAnalysis(match.response);
 
     await this.addAnalysisToDb(analysis);
-    // await this.statsService.incrementAnalyzedGamesByOne();
 
     return analysis;
   }

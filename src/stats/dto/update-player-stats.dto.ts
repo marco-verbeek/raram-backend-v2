@@ -1,4 +1,4 @@
-export class UpdateStatsDto {
+export class UpdatePlayerStatsDto {
   win: boolean;
   leaguePoints: number;
 
