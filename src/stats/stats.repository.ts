@@ -73,6 +73,10 @@ export class StatsRepository {
       .select('-__v -_id');
   }
 
+  async champStatsExist(name: string): Promise<boolean> {
+    return await this.championStatsModel.exists({ name });
+  }
+
   async createChampionStats(name: string): Promise<Champion> {
     const newChamp = new this.championStatsModel({ name });
     return newChamp.save();
@@ -80,7 +84,9 @@ export class StatsRepository {
 
   async getChampionStats(name: string): Promise<Champion> {
     return this.championStatsModel
-      .findOne({ name: { $regex: '^' + name + '$', $options: 'i' } })
+      .findOne({
+        name: { $regex: '^' + name + '$', $options: 'i' },
+      })
       .select('-__v -_id');
   }
 

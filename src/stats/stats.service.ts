@@ -39,20 +39,31 @@ export class StatsService {
     return this.statsRepository.addGameIdToAnalyzedGames(gameId);
   }
 
+  async createChampionStats(name: string): Promise<Champion> {
+    return this.statsRepository.createChampionStats(name);
+  }
+
   async getChampionStats(name: string): Promise<Champion> {
     const stats = await this.statsRepository.getChampionStats(name);
 
-    return stats !== null
-      ? stats
-      : this.statsRepository.createChampionStats(name);
+    // This is absolutely horrendous ; stats.players is a Mongoose Document and the IDE thinks this is a badly configured Map. (see champion schema)
+    // If you're reading this, please send me a message with a solution?
+    const players = <Map<string, number>>(<unknown>stats.players);
+    const top5 = [...players.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    stats.players = top5;
+
+    return stats;
   }
 
   async updateChampionStats(
     name: string,
     stats: UpdateChampStatsDto,
   ): Promise<Champion> {
-    // Make sure there is an entry for this champion in the Map.
-    await this.getChampionStats(name);
+    const exists = await this.statsRepository.champStatsExist(name);
+    if (!exists) await this.createChampionStats(name);
 
     return this.statsRepository.incrementChampionStats(name, stats);
   }
