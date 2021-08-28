@@ -79,7 +79,9 @@ export class StatsRepository {
   }
 
   async getChampionStats(name: string): Promise<Champion> {
-    return this.championStatsModel.findOne({ name }).select('-__v -_id');
+    return this.championStatsModel
+      .findOne({ name: { $regex: '^' + name + '$', $options: 'i' } })
+      .select('-__v -_id');
   }
 
   async incrementChampionStats(
