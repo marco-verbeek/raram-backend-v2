@@ -46,14 +46,18 @@ export class StatsService {
   async getChampionStats(name: string): Promise<Champion> {
     const stats = await this.statsRepository.getChampionStats(name);
 
-    // This is absolutely horrendous ; TS thinks stats.players is a badly configured Map. (see champion schema)
-    // If you're reading this, please send me a message with a solution?
-    const players = <Map<string, number>>(<unknown>stats.players);
-    const top5 = [...players.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
+    if (stats.players !== null) {
+      // This is absolutely horrendous ; TS thinks stats.players is a badly configured Map. (see champion schema)
+      // If you're reading this, please send me a message with a solution?
+      const players = <Map<string, number>>(<unknown>stats.players);
+      const top5 = [...players.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    stats.players = top5;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      stats.players = top5;
+    }
 
     return stats;
   }
