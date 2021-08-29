@@ -39,6 +39,10 @@ export class StatsService {
     return this.statsRepository.addGameIdToAnalyzedGames(gameId);
   }
 
+  async incrementVerifiedAccounts(): Promise<Tool> {
+    return this.statsRepository.incrementVerifiedAccounts();
+  }
+
   async createChampionStats(name: string): Promise<Champion> {
     return this.statsRepository.createChampionStats(name);
   }

@@ -47,7 +47,13 @@ export class AccountsController {
     }
 
     // call Riot API for verifying third party code with db uuid
-    return this.accountsService.checkVerification(account);
+    const verification = await this.accountsService.checkVerification(account);
+
+    if (verification.verified) {
+      await this.statsService.incrementVerifiedAccounts();
+    }
+
+    return verification;
   }
 
   @Get('/verify/:discordId')

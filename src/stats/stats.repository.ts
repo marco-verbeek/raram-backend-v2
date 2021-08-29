@@ -73,6 +73,12 @@ export class StatsRepository {
       .select('-__v -_id');
   }
 
+  async incrementVerifiedAccounts(): Promise<Tool> {
+    return this.toolStatsModel
+      .findOneAndUpdate({}, { $inc: { verifiedAccounts: 1 } }, { new: true })
+      .select('-__v -_id');
+  }
+
   async champStatsExist(name: string): Promise<boolean> {
     return await this.championStatsModel.exists({ name });
   }
