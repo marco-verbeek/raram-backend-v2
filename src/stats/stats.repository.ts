@@ -25,6 +25,22 @@ export class StatsRepository {
     return this.playerStatsModel.findOne({ discordId }).select('-__v -_id');
   }
 
+  async findTop5HighestRankingPlayers(): Promise<Player[]> {
+    return this.playerStatsModel
+      .find({})
+      .sort({ leaguePoints: -1 })
+      .limit(5)
+      .select('-__v -_id');
+  }
+
+  async findTop5HighestWinRatePlayers(): Promise<Player[]> {
+    return this.playerStatsModel
+      .find({})
+      .sort({ leaguePoints: -1 })
+      .limit(5)
+      .select('-__v -_id');
+  }
+
   async incrementPlayerStats(
     discordId: string,
     stats: UpdatePlayerStatsDto,
