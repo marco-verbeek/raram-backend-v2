@@ -57,7 +57,7 @@ export class AccountsController {
   }
 
   @Get('/verify/:discordId')
-  async verification2(@Param('discordId') discordId: string) {
+  async verificationById(@Param('discordId') discordId: string) {
     const account: Account = await this.accountsService.getAccount(discordId);
 
     if (account === null) {
