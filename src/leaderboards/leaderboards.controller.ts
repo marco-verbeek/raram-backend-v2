@@ -12,4 +12,9 @@ export class LeaderboardsController {
   async getTop5SummonersByRank() {
     return await this.leaderboardsService.getTop5SummonersByRank();
   }
+
+  @Get('summoners/win-rate')
+  async getTop5SummonersByWR() {
+    return await this.leaderboardsService.getTop5SummonersByWR();
+  }
 }
