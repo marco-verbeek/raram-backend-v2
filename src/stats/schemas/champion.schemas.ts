@@ -17,6 +17,11 @@ export class Champion {
   gamesWon: number;
 
   @Prop({ default: 0 })
+  totalPointsWon: number;
+  @Prop({ default: 0 })
+  totalPointsLost: number;
+
+  @Prop({ default: 0 })
   totalKP: number;
   @Prop({ default: 0 })
   doubleKills: number;

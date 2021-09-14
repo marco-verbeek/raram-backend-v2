@@ -285,7 +285,7 @@ export class AnalysesService {
 
       if (account === null) continue;
 
-      const stats: UpdatePlayerStatsDto = {
+      await this.statsService.updateAccountStats(account.discordId, {
         win: player.teamId === winningTeamId,
         leaguePoints: player.lpGain,
 
@@ -305,19 +305,24 @@ export class AnalysesService {
         damageDealt: player.damageDone,
         damageTaken: player.damageTaken,
         healed: player.healed,
-      };
-
-      await this.statsService.updateAccountStats(account.discordId, stats);
+      });
       console.log('Updated stats for ' + player.summonerName);
 
       await this.statsService.updateChampionStats(player.champion, {
         playedBySummonerName: player.summonerName,
         win: player.teamId === winningTeamId,
         totalKP: player.kills + player.assists,
+
+        totalPointsWon:
+          player.teamId === winningTeamId ? player.leaguePoints : 0,
+        totalPointsLost:
+          player.teamId !== winningTeamId ? player.leaguePoints : 0,
+
         doubleKills: player.doubleKills,
         tripleKills: player.tripleKills,
         quadraKills: player.quadraKills,
         pentaKills: player.pentaKills,
+
         totalDamageDone: player.damageDone,
         totalDamageTaken: player.damageTaken,
         totalHealed: player.healed,

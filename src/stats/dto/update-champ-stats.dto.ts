@@ -2,6 +2,9 @@ export class UpdateChampStatsDto {
   playedBySummonerName: string;
   win: boolean;
 
+  totalPointsWon: number;
+  totalPointsLost: number;
+
   totalKP: number;
   doubleKills: number;
   tripleKills: number;

@@ -126,6 +126,9 @@ export class StatsRepository {
             gamesPlayed: 1,
             gamesWon: stats.win ? 1 : 0,
 
+            totalPointsWon: stats.totalPointsWon,
+            totalPointsLost: stats.totalPointsLost,
+
             totalKP: stats.totalKP,
             doubleKills: stats.doubleKills,
             tripleKills: stats.tripleKills,
