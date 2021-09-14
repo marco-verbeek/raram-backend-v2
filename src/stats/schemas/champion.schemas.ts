@@ -17,9 +17,18 @@ export class Champion {
   gamesWon: number;
 
   @Prop({ default: 0 })
-  pentas: number;
-  @Prop({ default: 0 })
   totalKP: number;
+  @Prop({ default: 0 })
+  doubleKills: number;
+  @Prop({ default: 0 })
+  tripleKills: number;
+  @Prop({ default: 0 })
+  quadraKills: number;
+  @Prop({ default: 0 })
+  pentaKills: number;
+
+  @Prop({ default: 0 })
+  pentas: number;
 
   @Prop({ default: 0 })
   totalDamageDone: number;

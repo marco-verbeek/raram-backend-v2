@@ -125,8 +125,13 @@ export class StatsRepository {
           $inc: {
             gamesPlayed: 1,
             gamesWon: stats.win ? 1 : 0,
-            pentas: stats.pentas,
+
             totalKP: stats.totalKP,
+            doubleKills: stats.doubleKills,
+            tripleKills: stats.tripleKills,
+            quadraKills: stats.quadraKills,
+            pentaKills: stats.pentaKills,
+
             totalDamageDone: stats.totalDamageDone,
             totalDamageTaken: stats.totalDamageTaken,
             totalHealed: stats.totalHealed,
