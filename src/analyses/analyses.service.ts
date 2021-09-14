@@ -311,10 +311,8 @@ export class AnalysesService {
         win: player.teamId === winningTeamId,
         totalKP: player.kills + player.assists,
 
-        totalPointsWon:
-          player.teamId === winningTeamId ? player.leaguePoints : 0,
-        totalPointsLost:
-          player.teamId !== winningTeamId ? player.leaguePoints : 0,
+        totalPointsWon: player.teamId === winningTeamId ? player.lpGain : 0,
+        totalPointsLost: player.teamId !== winningTeamId ? player.lpGain : 0,
 
         doubleKills: player.doubleKills,
         tripleKills: player.tripleKills,
