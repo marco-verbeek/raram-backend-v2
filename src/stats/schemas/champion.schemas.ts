@@ -28,9 +28,6 @@ export class Champion {
   pentaKills: number;
 
   @Prop({ default: 0 })
-  pentas: number;
-
-  @Prop({ default: 0 })
   totalDamageDone: number;
   @Prop({ default: 0 })
   totalDamageTaken: number;
