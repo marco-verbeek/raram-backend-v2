@@ -14,8 +14,6 @@ import {
 import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
 import { StatsService } from '../stats/stats.service';
-import { UpdatePlayerStatsDto } from '../stats/dto/update-player-stats.dto';
-import { Champion } from '../stats/schemas/champion.schemas';
 
 @Injectable()
 export class AnalysesService {
