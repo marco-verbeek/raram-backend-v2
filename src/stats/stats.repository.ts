@@ -138,7 +138,11 @@ export class StatsRepository {
             totalDamageDone: stats.totalDamageDone,
             totalDamageTaken: stats.totalDamageTaken,
             totalHealed: stats.totalHealed,
-            [keyName]: 1,
+
+            // Total games played
+            [keyName + '.0']: 1,
+            // Total games won
+            [keyName + '.1']: stats.win ? 1 : 0,
           },
         },
         { new: true },
