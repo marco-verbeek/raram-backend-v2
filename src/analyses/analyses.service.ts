@@ -96,7 +96,6 @@ export class AnalysesService {
         e['participantId'],
       );
 
-      //participant['accountId'] = identity.accountId;
       participant['summonerName'] = identity.summonerName;
 
       participant['championId'] = identity.championId;
