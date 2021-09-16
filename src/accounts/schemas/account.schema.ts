@@ -17,6 +17,9 @@ export class Account {
   @Prop({ required: true })
   encryptedAccountId!: string;
 
+  @Prop({ required: true })
+  playerUUID!: string;
+
   @Prop()
   verified: boolean;
 

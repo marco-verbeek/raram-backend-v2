@@ -3,7 +3,7 @@ import { Account } from './schemas/account.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { AccountsRepository } from './accounts.repository';
 import { LolApi } from 'twisted';
-import { Regions } from 'twisted/dist/constants';
+import { RegionGroups, Regions } from 'twisted/dist/constants';
 
 @Injectable()
 export class AccountsService {
@@ -41,6 +41,7 @@ export class AccountsService {
       summonerName: leagueAccount.response.name,
       summonerId: leagueAccount.response.id,
       encryptedAccountId: leagueAccount.response.accountId,
+      playerUUID: leagueAccount.response.puuid,
       uuid: uuidv4(),
       verified: false,
     });
@@ -78,17 +79,17 @@ export class AccountsService {
         error: 'Profile not verified',
       };
 
-    const matchListing = await this.LeagueAPI.Match.list(
-      profile.encryptedAccountId,
-      Regions.EU_WEST,
-      { queue: 450, endIndex: 1 },
+    const matchListing = await this.LeagueAPI.MatchV5.list(
+      profile.playerUUID,
+      RegionGroups.EUROPE,
+      { queue: 450, count: 1 },
     );
 
-    if (matchListing.response.matches.length === 0)
+    if (matchListing.response.length === 0)
       return {
         error: 'No recent ARAM games found',
       };
 
-    return { matchId: matchListing.response.matches[0].gameId };
+    return { matchId: matchListing.response[0] };
   }
 }
