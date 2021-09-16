@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { Regions } from 'twisted/dist/constants';
+import { RegionGroups } from 'twisted/dist/constants';
 import { LolApi } from 'twisted';
 
 import { Player } from './interfaces/player.interface';
 import { Team } from './interfaces/team.interface';
 import { Analysis } from './interfaces/analysis.interface';
 
-import {
-  MatchDto,
-  MatchParticipantsIdentitiesDto,
-} from 'twisted/dist/models-dto';
+import { MatchParticipantsIdentitiesDto } from 'twisted/dist/models-dto';
 import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
 import { StatsService } from '../stats/stats.service';
+import { MatchV5DTOs } from 'twisted/dist/models-dto/matches/match-v5';
 
 @Injectable()
 export class AnalysesService {
@@ -64,81 +62,69 @@ export class AnalysesService {
    * @returns {JSON} representing a summonerDTO (see Riot's API documentation)
    */
   getParticipantIdentity(
-    matchData: MatchDto,
+    matchData: MatchV5DTOs.MatchDto,
     participantId,
-  ): MatchParticipantsIdentitiesDto {
-    return matchData.participantIdentities.find(
-      (e: MatchParticipantsIdentitiesDto) => e.participantId === participantId,
+  ): MatchV5DTOs.ParticipantDto {
+    const matchDataIdentities = matchData.info;
+
+    return matchDataIdentities.participants.find(
+      (e) => e.participantId === participantId,
     );
-  }
-
-  /**
-   * Returns the champion name by champion id. Uses Twisted, and returns 'Unknown' if not found.
-   * @param championId the id representing which champion we're looking for
-   */
-  async getChampionName(championId: number): Promise<string> {
-    try {
-      const champion = await this.LeagueAPI.DataDragon.getChampion(championId);
-      return champion.name;
-    } catch (e) {
-      console.log(
-        'Could not find champion with ID ' +
-          championId +
-          '. Therefore, I returned Unknown.',
-      );
-
-      return 'Unknown';
-    }
   }
 
   /**
    * Performs the analysis based on the matchData received.
    * @param matchData: game data based on MatchDto received when querying the Twisted API
    */
-  performMatchAnalysis = async (matchData: MatchDto): Promise<Analysis> => {
+  performMatchAnalysis = async (
+    matchData: MatchV5DTOs.MatchDto,
+  ): Promise<Analysis> => {
+    const matchDataInfo = matchData.info;
+
     const players: Player[] = [];
     const teams: Team[] = [];
 
     const allAnalyzedGameIds = await this.statsService.getAnalyzedGameIds();
     const gameAlreadyAnalyzed =
-      allAnalyzedGameIds.indexOf(matchData.gameId) > -1;
+      allAnalyzedGameIds.indexOf(matchDataInfo.gameId) > -1;
 
-    for (const e of matchData.participants) {
+    for (const e of matchDataInfo.participants) {
       const participant = {};
 
-      const identity: MatchParticipantsIdentitiesDto =
-        this.getParticipantIdentity(matchData, e['participantId']);
+      const identity: MatchV5DTOs.ParticipantDto = this.getParticipantIdentity(
+        matchData,
+        e['participantId'],
+      );
 
-      participant['accountId'] = identity.player.accountId;
-      participant['summonerName'] = identity['player']['summonerName'];
+      //participant['accountId'] = identity.accountId;
+      participant['summonerName'] = identity.summonerName;
 
-      participant['championId'] = e['championId'];
+      participant['championId'] = identity.championId;
 
-      participant['champion'] = await this.getChampionName(e['championId']);
-      participant['teamId'] = e['teamId'];
+      participant['champion'] = identity.championName;
+      participant['teamId'] = identity.teamId;
 
-      participant['kills'] = e['stats']['kills'];
-      participant['deaths'] = e['stats']['deaths'];
-      participant['assists'] = e['stats']['assists'];
+      participant['kills'] = identity.kills;
+      participant['deaths'] = identity.deaths;
+      participant['assists'] = identity.assists;
 
-      participant['KP'] = e['stats']['kills'] + e['stats']['assists'];
+      participant['KP'] = identity.kills + identity.assists;
 
-      participant['damageDone'] = e['stats']['totalDamageDealtToChampions'];
-      participant['damageTaken'] = e['stats']['totalDamageTaken'];
-      participant['healed'] = e['stats']['totalHeal'];
+      participant['damageDone'] = identity.totalDamageDealtToChampions;
+      participant['damageTaken'] = identity.totalDamageTaken;
+      participant['healed'] = identity.totalHeal;
 
-      participant['doubleKills'] = e['stats']['doubleKills'];
-      participant['tripleKills'] = e['stats']['tripleKills'];
-      participant['quadraKills'] = e['stats']['quadraKills'];
-      participant['pentaKills'] = e['stats']['pentaKills'];
+      participant['doubleKills'] = identity.doubleKills;
+      participant['tripleKills'] = identity.tripleKills;
+      participant['quadraKills'] = identity.quadraKills;
+      participant['pentaKills'] = identity.pentaKills;
 
-      participant['goldEarned'] = e['stats']['goldEarned'];
-      participant['goldSpent'] = e['stats']['goldSpent'];
+      participant['goldEarned'] = identity.goldEarned;
+      participant['goldSpent'] = identity.goldSpent;
 
-      participant['totalMinionsKilled'] = e['stats']['totalMinionsKilled'];
-      participant['firstBloodKill'] = e['stats']['firstBloodKill'];
-      participant['longestTimeSpentLiving'] =
-        e['stats']['longestTimeSpentLiving'];
+      participant['totalMinionsKilled'] = identity.totalMinionsKilled;
+      participant['firstBloodKill'] = identity.firstBloodKill;
+      participant['longestTimeSpentLiving'] = identity.longestTimeSpentLiving;
 
       players.push(<Player>participant);
 
@@ -146,24 +132,24 @@ export class AnalysesService {
       let team = teams.find((elem) => elem.teamId === e.teamId);
       if (team === undefined) {
         team = <Team>{
-          teamId: e['teamId'],
-          win: e['stats']['win'],
-          totalKills: e['stats']['kills'],
-          totalAssists: e['stats']['assists'],
-          totalDeaths: e['stats']['deaths'],
-          totalDamageDone: e['stats']['totalDamageDealtToChampions'],
-          totalDamageTaken: e['stats']['totalDamageTaken'],
-          totalHealed: e['stats']['totalHeal'],
+          teamId: identity.teamId,
+          win: identity.win,
+          totalKills: identity.kills,
+          totalAssists: identity.assists,
+          totalDeaths: identity.deaths,
+          totalDamageDone: identity.totalDamageDealtToChampions,
+          totalDamageTaken: identity.totalDamageTaken,
+          totalHealed: identity.totalHeal,
         };
 
         teams.push(<Team>team);
       } else {
-        team['totalKills'] += e['stats']['kills'];
-        team['totalAssists'] += e['stats']['assists'];
-        team['totalDeaths'] += e['stats']['deaths'];
-        team['totalDamageDone'] += e['stats']['totalDamageDealtToChampions'];
-        team['totalDamageTaken'] += e['stats']['totalDamageTaken'];
-        team['totalHealed'] += e['stats']['totalHeal'];
+        team['totalKills'] += identity.kills;
+        team['totalAssists'] += identity.assists;
+        team['totalDeaths'] += identity.deaths;
+        team['totalDamageDone'] += identity.totalDamageDealtToChampions;
+        team['totalDamageTaken'] += identity.totalDamageTaken;
+        team['totalHealed'] += identity.totalHeal;
       }
     }
 
@@ -328,7 +314,10 @@ export class AnalysesService {
   };
 
   async analyseGameWithId(gameId: number): Promise<Analysis> {
-    const match = await this.LeagueAPI.Match.get(gameId, Regions.EU_WEST);
+    const match = await this.LeagueAPI.MatchV5.get(
+      String(gameId),
+      RegionGroups.EUROPE,
+    );
     const analysis = await this.performMatchAnalysis(match.response);
 
     await this.addAnalysisToDb(analysis);
