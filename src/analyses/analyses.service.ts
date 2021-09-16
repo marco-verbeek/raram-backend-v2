@@ -313,11 +313,8 @@ export class AnalysesService {
     }
   };
 
-  async analyseGameWithId(gameId: number): Promise<Analysis> {
-    const match = await this.LeagueAPI.MatchV5.get(
-      String(gameId),
-      RegionGroups.EUROPE,
-    );
+  async analyseGameWithId(gameId: string): Promise<Analysis> {
+    const match = await this.LeagueAPI.MatchV5.get(gameId, RegionGroups.EUROPE);
     const analysis = await this.performMatchAnalysis(match.response);
 
     await this.addAnalysisToDb(analysis);

@@ -6,7 +6,7 @@ export class AnalysesController {
   constructor(private readonly analysesService: AnalysesService) {}
 
   @Get(':gameId')
-  async getAnalysis(@Param('gameId') gameId: number) {
+  async getAnalysis(@Param('gameId') gameId: string) {
     return this.analysesService.analyseGameWithId(gameId);
   }
 }
