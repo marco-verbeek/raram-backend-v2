@@ -232,10 +232,10 @@ export class AnalysesService {
       teams: teams,
       players: players,
       game: {
-        gameDuration: matchData['gameDuration'],
-        gameCreation: matchData['gameCreation'],
-        queueId: matchData['queueId'],
-        gameId: matchData['gameId'],
+        gameDuration: matchDataInfo.gameDuration,
+        gameCreation: matchDataInfo.gameCreation,
+        queueId: matchDataInfo.queueId,
+        gameId: matchDataInfo.gameId,
       },
     };
   };
