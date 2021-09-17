@@ -8,8 +8,8 @@ export class Champion {
   @Prop({ unique: true })
   name!: string;
 
-  @Prop({ type: Map, of: [Number] })
-  players: { type: Map<string, Array<number>>; of: Array<number> };
+  @Prop({ type: Map })
+  players: { type: Map<string, Array<number>> };
 
   @Prop({ default: 0 })
   gamesPlayed: number;

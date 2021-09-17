@@ -109,6 +109,7 @@ export class StatsRepository {
       .findOne({
         name: { $regex: '^' + name + '$', $options: 'i' },
       })
+      .lean()
       .select('-__v -_id');
   }
 
