@@ -59,6 +59,7 @@ export class StatsRepository {
             deaths: stats.deaths,
             assists: stats.assists,
             firstBloods: stats.firstBloodKill ? 1 : 0,
+            firstBloodAssists: stats.firstBloodAssist ? 1 : 0,
             doubleKills: stats.doubleKills,
             tripleKills: stats.tripleKills,
             quadraKills: stats.quadraKills,

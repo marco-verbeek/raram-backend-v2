@@ -19,6 +19,7 @@ export interface Player {
   goldSpent: number;
   totalMinionsKilled: number;
   firstBloodKill: boolean;
+  firstBloodAssist: boolean;
   longestTimeSpentLiving: number;
   teamComparedKP: number;
   teamComparedDeaths: number;

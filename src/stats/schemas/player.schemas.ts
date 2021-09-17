@@ -29,6 +29,8 @@ export class Player {
 
   @Prop({ default: 0 })
   firstBloods: number;
+  @Prop({ default: 0 })
+  firstBloodAssists: number;
 
   @Prop({ default: 0 })
   doubleKills: number;

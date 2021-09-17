@@ -7,7 +7,6 @@ import { Player } from './interfaces/player.interface';
 import { Team } from './interfaces/team.interface';
 import { Analysis } from './interfaces/analysis.interface';
 
-import { MatchParticipantsIdentitiesDto } from 'twisted/dist/models-dto';
 import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
 import { StatsService } from '../stats/stats.service';
@@ -123,6 +122,7 @@ export class AnalysesService {
 
       participant['totalMinionsKilled'] = identity.totalMinionsKilled;
       participant['firstBloodKill'] = identity.firstBloodKill;
+      participant['firstBloodAssist'] = identity.firstBloodAssist;
       participant['longestTimeSpentLiving'] = identity.longestTimeSpentLiving;
 
       players.push(<Player>participant);
@@ -278,7 +278,9 @@ export class AnalysesService {
         kills: player.kills,
         deaths: player.deaths,
         assists: player.assists,
+
         firstBloodKill: player.firstBloodKill,
+        firstBloodAssist: player.firstBloodAssist,
 
         doubleKills: player.doubleKills,
         tripleKills: player.tripleKills,

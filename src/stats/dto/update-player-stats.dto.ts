@@ -10,6 +10,7 @@ export class UpdatePlayerStatsDto {
   assists: number;
 
   firstBloodKill: boolean;
+  firstBloodAssist: boolean;
 
   doubleKills: number;
   tripleKills: number;
