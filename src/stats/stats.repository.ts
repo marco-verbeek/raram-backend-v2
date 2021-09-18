@@ -33,6 +33,14 @@ export class StatsRepository {
       .select('-__v -_id');
   }
 
+  async findTop5HighestPentaKillers(): Promise<Player[]> {
+    return this.playerStatsModel
+      .find({})
+      .sort({ pentaKills: -1 })
+      .limit(5)
+      .select('-__v -_id');
+  }
+
   async findTop5HighestWinRatePlayers(): Promise<Player[]> {
     return this.playerStatsModel
       .aggregate([

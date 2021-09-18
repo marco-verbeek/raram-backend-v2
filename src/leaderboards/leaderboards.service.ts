@@ -3,6 +3,7 @@ import { SummonersByRankDto } from './dto/summoners-by-rank.dto';
 import { StatsRepository } from '../stats/stats.repository';
 import { AccountsRepository } from '../accounts/accounts.repository';
 import { SummonersByWrDto } from './dto/summoners-by-wr.dto';
+import { SummonersByPentaKillsDto } from './dto/summoners-by-pentakills.dto';
 
 @Injectable()
 export class LeaderboardsService {
@@ -49,5 +50,24 @@ export class LeaderboardsService {
     }
 
     return summonersByWR;
+  }
+
+  async getTop5SummonersByPentaKills(): Promise<SummonersByPentaKillsDto[]> {
+    const players = await this.statsRepository.findTop5HighestPentaKillers();
+
+    const summonersByPentaKills: SummonersByPentaKillsDto[] = [];
+    for (const player of players) {
+      const account = await this.accountsRepository.findOne({
+        discordId: player.discordId,
+        verified: true,
+      });
+
+      summonersByPentaKills.push({
+        summonerName: account.summonerName,
+        pentaKills: player.pentaKills,
+      });
+    }
+
+    return summonersByPentaKills;
   }
 }

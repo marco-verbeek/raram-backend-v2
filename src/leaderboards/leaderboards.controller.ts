@@ -17,4 +17,9 @@ export class LeaderboardsController {
   async getTop5SummonersByWR() {
     return await this.leaderboardsService.getTop5SummonersByWR();
   }
+
+  @Get('summoners/pentakills')
+  async getTop5SummonersByPentaKills() {
+    return await this.leaderboardsService.getTop5SummonersByPentaKills();
+  }
 }
