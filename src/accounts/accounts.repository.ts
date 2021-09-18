@@ -13,6 +13,12 @@ export class AccountsRepository {
     return this.accountModel.findOne(account).select('-__v -_id');
   }
 
+  async findVerifiedAccount(discordId: string): Promise<Account> {
+    return this.accountModel
+      .findOne({ discordId: discordId, verified: true })
+      .select('-__v -_id');
+  }
+
   async findVerifiedAccountCaseInsensitive(
     summonerName: string,
   ): Promise<Account> {

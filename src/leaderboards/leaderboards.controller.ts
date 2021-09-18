@@ -20,8 +20,18 @@ export class LeaderboardsController {
     return await this.leaderboardsService.getTop5SummonersByWR();
   }
 
-  @Get('summoners/pentakills')
+  @Get('summoners/penta-kills')
   async getTop5SummonersByPentaKills() {
     return await this.leaderboardsService.getTop5SummonersByPentaKills();
+  }
+
+  @Get('summoners/highest-avg-kp')
+  async getTop5SummonersByHighestAvgKP() {
+    return await this.leaderboardsService.getTop5SummonersByHighestAvgKP();
+  }
+
+  @Get('summoners/lowest-avg-deaths')
+  async getTop5SummonersByLowestAvgDeaths() {
+    return await this.leaderboardsService.getTop5SummonersByLowestAvgDeaths();
   }
 }

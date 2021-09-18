@@ -5,6 +5,8 @@ import { AccountsRepository } from '../accounts/accounts.repository';
 import { SummonersByWrDto } from './dto/summoners-by-wr.dto';
 import { SummonersByPentaKillsDto } from './dto/summoners-by-pentakills.dto';
 import { LeaderboardDto } from './dto/leaderboard.dto';
+import { SummonersByLowestAvgDeathsDto } from './dto/summoners-by-lowest-avg-deaths.dto';
+import { SummonersByHighestAvgKP } from './dto/summoners-by-highest-kp.dto';
 
 @Injectable()
 export class LeaderboardsService {
@@ -18,6 +20,8 @@ export class LeaderboardsService {
       highestRanking: await this.getTop5SummonersByRank(),
       highestWinrate: await this.getTop5SummonersByWR(),
       highestPentaKills: await this.getTop5SummonersByPentaKills(),
+      highestAvgKP: await this.getTop5SummonersByHighestAvgKP(),
+      lowestAvgDeaths: await this.getTop5SummonersByLowestAvgDeaths(),
     };
   }
 
@@ -26,13 +30,12 @@ export class LeaderboardsService {
 
     const summonersByRank: SummonersByRankDto[] = [];
     for (const player of players) {
-      const account = await this.accountsRepository.findOne({
-        discordId: player.discordId,
-        verified: true,
-      });
+      const summonerName = (
+        await this.accountsRepository.findVerifiedAccount(player.discordId)
+      ).summonerName;
 
       summonersByRank.push({
-        summonerName: account.summonerName,
+        summonerName: summonerName,
         leaguePoints: player.leaguePoints,
       });
     }
@@ -45,13 +48,12 @@ export class LeaderboardsService {
 
     const summonersByWR: SummonersByWrDto[] = [];
     for (const player of players) {
-      const account = await this.accountsRepository.findOne({
-        discordId: player.discordId,
-        verified: true,
-      });
+      const summonerName = (
+        await this.accountsRepository.findVerifiedAccount(player.discordId)
+      ).summonerName;
 
       summonersByWR.push({
-        summonerName: account.summonerName,
+        summonerName: summonerName,
         rankedGames: player.rankedGames,
         wins: player.wins,
         winrate: player.wins / player.rankedGames,
@@ -66,17 +68,54 @@ export class LeaderboardsService {
 
     const summonersByPentaKills: SummonersByPentaKillsDto[] = [];
     for (const player of players) {
-      const account = await this.accountsRepository.findOne({
-        discordId: player.discordId,
-        verified: true,
-      });
+      const summonerName = (
+        await this.accountsRepository.findVerifiedAccount(player.discordId)
+      ).summonerName;
 
       summonersByPentaKills.push({
-        summonerName: account.summonerName,
+        summonerName: summonerName,
         pentaKills: player.pentaKills,
       });
     }
 
     return summonersByPentaKills;
+  }
+
+  async getTop5SummonersByHighestAvgKP(): Promise<SummonersByHighestAvgKP[]> {
+    const players = await this.statsRepository.findTop5HighestAvgKP();
+
+    const summonersByHighestAvgKP: SummonersByHighestAvgKP[] = [];
+    for (const player of players) {
+      const summonerName = (
+        await this.accountsRepository.findVerifiedAccount(player.discordId)
+      ).summonerName;
+
+      summonersByHighestAvgKP.push({
+        summonerName: summonerName,
+        avgKP: (player.kills + player.assists) / player.rankedGames,
+      });
+    }
+
+    return summonersByHighestAvgKP;
+  }
+
+  async getTop5SummonersByLowestAvgDeaths(): Promise<
+    SummonersByLowestAvgDeathsDto[]
+  > {
+    const players = await this.statsRepository.findTop5LowestAvgDeaths();
+
+    const summonersByLowestAvgDeaths: SummonersByLowestAvgDeathsDto[] = [];
+    for (const player of players) {
+      const summonerName = (
+        await this.accountsRepository.findVerifiedAccount(player.discordId)
+      ).summonerName;
+
+      summonersByLowestAvgDeaths.push({
+        summonerName: summonerName,
+        avgDeaths: player.deaths / player.rankedGames,
+      });
+    }
+
+    return summonersByLowestAvgDeaths;
   }
 }

@@ -6,6 +6,10 @@ import { UpdatePlayerStatsDto } from './dto/update-player-stats.dto';
 import { Tool, ToolDocument } from './schemas/tool.schemas';
 import { Champion, ChampionDocument } from './schemas/champion.schemas';
 import { UpdateChampStatsDto } from './dto/update-champ-stats.dto';
+import { SummonersByHighestAvgKP } from 'src/leaderboards/dto/summoners-by-highest-kp.dto';
+import { SummonersByWrDto } from 'src/leaderboards/dto/summoners-by-wr.dto';
+import { SummonersByPentaKillsDto } from 'src/leaderboards/dto/summoners-by-pentakills.dto';
+import { SummonersByLowestAvgDeathsDto } from 'src/leaderboards/dto/summoners-by-lowest-avg-deaths.dto';
 
 @Injectable()
 export class StatsRepository {
@@ -54,6 +58,41 @@ export class StatsRepository {
         },
       ])
       .sort({ winrate: -1 })
+      .limit(5);
+  }
+
+  async findTop5HighestAvgKP(): Promise<Player[]> {
+    return this.playerStatsModel
+      .aggregate([
+        {
+          $project: {
+            avgKP: {
+              $divide: [{ $add: ['$kills', '$assists'] }, '$rankedGames'],
+            },
+            discordId: 1,
+            kills: 1,
+            assists: 1,
+            rankedGames: 1,
+          },
+        },
+      ])
+      .sort({ avgKP: -1 })
+      .limit(5);
+  }
+
+  async findTop5LowestAvgDeaths(): Promise<Player[]> {
+    return this.playerStatsModel
+      .aggregate([
+        {
+          $project: {
+            avgDeaths: { $divide: ['$deaths', '$rankedGames'] },
+            discordId: 1,
+            deaths: 1,
+            rankedGames: 1,
+          },
+        },
+      ])
+      .sort({ avgDeaths: 1 })
       .limit(5);
   }
 
