@@ -35,10 +35,18 @@ export class StatsRepository {
 
   async findTop5HighestWinRatePlayers(): Promise<Player[]> {
     return this.playerStatsModel
-      .find({})
-      .sort({ leaguePoints: -1 })
-      .limit(5)
-      .select('-__v -_id');
+      .aggregate([
+        {
+          $project: {
+            winrate: { $divide: ['$wins', '$rankedGames'] },
+            discordId: 1,
+            rankedGames: 1,
+            wins: 1,
+          },
+        },
+      ])
+      .sort({ winrate: -1 })
+      .limit(5);
   }
 
   async incrementPlayerStats(

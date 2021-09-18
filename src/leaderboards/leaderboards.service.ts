@@ -42,7 +42,9 @@ export class LeaderboardsService {
 
       summonersByWR.push({
         summonerName: account.summonerName,
-        leaguePoints: player.leaguePoints,
+        rankedGames: player.rankedGames,
+        wins: player.wins,
+        winrate: player.wins / player.rankedGames,
       });
     }
 
