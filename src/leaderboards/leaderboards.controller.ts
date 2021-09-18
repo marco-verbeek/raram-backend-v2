@@ -5,8 +5,10 @@ import { LeaderboardsService } from './leaderboards.service';
 export class LeaderboardsController {
   constructor(private readonly leaderboardsService: LeaderboardsService) {}
 
-  @Get('champions')
-  async getChampionLeaderboards() {}
+  @Get()
+  async getLeaderboards() {
+    return await this.leaderboardsService.getLeaderboards();
+  }
 
   @Get('summoners/rank')
   async getTop5SummonersByRank() {

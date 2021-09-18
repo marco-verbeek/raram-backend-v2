@@ -4,6 +4,7 @@ import { StatsRepository } from '../stats/stats.repository';
 import { AccountsRepository } from '../accounts/accounts.repository';
 import { SummonersByWrDto } from './dto/summoners-by-wr.dto';
 import { SummonersByPentaKillsDto } from './dto/summoners-by-pentakills.dto';
+import { LeaderboardDto } from './dto/leaderboard.dto';
 
 @Injectable()
 export class LeaderboardsService {
@@ -11,6 +12,14 @@ export class LeaderboardsService {
     private readonly statsRepository: StatsRepository,
     private readonly accountsRepository: AccountsRepository,
   ) {}
+
+  async getLeaderboards(): Promise<LeaderboardDto> {
+    return {
+      highestRanking: await this.getTop5SummonersByRank(),
+      highestWinrate: await this.getTop5SummonersByWR(),
+      highestPentaKills: await this.getTop5SummonersByPentaKills(),
+    };
+  }
 
   async getTop5SummonersByRank(): Promise<SummonersByRankDto[]> {
     const players = await this.statsRepository.findTop5HighestRankingPlayers();
