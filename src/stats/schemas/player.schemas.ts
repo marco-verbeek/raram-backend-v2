@@ -16,6 +16,11 @@ export class Player {
   leaguePoints: number;
 
   @Prop({ default: 0 })
+  pointsWon: number;
+  @Prop({ default: 0 })
+  pointsLost: number;
+
+  @Prop({ default: 0 })
   goldEarned: number;
   @Prop({ default: 0 })
   goldSpent: number;

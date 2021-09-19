@@ -96,6 +96,22 @@ export class StatsRepository {
       .limit(5);
   }
 
+  async findTop5HighestAvgWinLP(): Promise<Player[]> {
+    return this.playerStatsModel
+      .aggregate([
+        {
+          $project: {
+            avgWinLP: { $divide: ['$pointsWon', '$rankedGames'] },
+            discordId: 1,
+            pointsWon: 1,
+            rankedGames: 1,
+          },
+        },
+      ])
+      .sort({ avgWinLP: -1 })
+      .limit(5);
+  }
+
   async incrementPlayerStats(
     discordId: string,
     stats: UpdatePlayerStatsDto,
@@ -108,6 +124,8 @@ export class StatsRepository {
             rankedGames: 1,
             wins: stats.win ? 1 : 0,
             leaguePoints: stats.leaguePoints,
+            pointsWon: stats.win ? stats.leaguePoints : 0,
+            pointsLost: stats.win ? 0 : stats.leaguePoints,
             goldEarned: stats.goldEarned,
             goldSpent: stats.goldSpent,
             kills: stats.kills,

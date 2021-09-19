@@ -34,4 +34,9 @@ export class LeaderboardsController {
   async getTop5SummonersByLowestAvgDeaths() {
     return await this.leaderboardsService.getTop5SummonersByLowestAvgDeaths();
   }
+
+  @Get('summoners/highest-avg-win-lp')
+  async getTop5SummonersByHighestAvgWinLP() {
+    return await this.leaderboardsService.getTop5SummonersByHighestAvgWinLP();
+  }
 }
