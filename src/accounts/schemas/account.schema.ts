@@ -15,9 +15,6 @@ export class Account {
   summonerId!: string;
 
   @Prop({ required: true })
-  encryptedAccountId!: string;
-
-  @Prop({ required: true })
   playerUUID!: string;
 
   @Prop()

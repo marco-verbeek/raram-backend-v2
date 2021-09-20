@@ -10,7 +10,9 @@ export class AccountsRepository {
   ) {}
 
   async findOne(account: Partial<Account>): Promise<Account> {
-    return this.accountModel.findOne(account).select('-__v -_id');
+    return this.accountModel
+      .findOne(account)
+      .select('-__v -_id -uuid -summonerId');
   }
 
   async findVerifiedAccount(discordId: string): Promise<Account> {

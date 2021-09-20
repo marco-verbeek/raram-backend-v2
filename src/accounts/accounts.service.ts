@@ -40,7 +40,6 @@ export class AccountsService {
       discordId: discordId,
       summonerName: leagueAccount.response.name,
       summonerId: leagueAccount.response.id,
-      encryptedAccountId: leagueAccount.response.accountId,
       playerUUID: leagueAccount.response.puuid,
       uuid: uuidv4(),
       verified: false,
