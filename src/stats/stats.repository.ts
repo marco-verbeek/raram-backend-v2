@@ -146,7 +146,9 @@ export class StatsRepository {
   }
 
   async getToolStats(): Promise<Tool> {
-    return this.toolStatsModel.findOne({}).select('-__v -_id');
+    return this.toolStatsModel
+      .findOneAndUpdate({}, {}, { upsert: true })
+      .select('-__v -_id');
   }
 
   async addGameIdToAnalyzedGames(gameId: number): Promise<Tool> {

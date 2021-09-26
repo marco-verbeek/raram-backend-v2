@@ -15,6 +15,10 @@ export class AccountsService {
     return this.accountsRepository.findOne({ discordId });
   }
 
+  async getFullAccount(discordId: string): Promise<Account> {
+    return this.accountsRepository.findOneFull({ discordId });
+  }
+
   async getVerifiedAccountBySummonerName(
     summonerName: string,
   ): Promise<Account> {

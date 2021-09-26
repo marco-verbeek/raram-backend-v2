@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AnalysesModule } from './analyses/analyses.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { StatsModule } from './stats/stats.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
+import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL, {
-      useFindAndModify: false,
-      useCreateIndex: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
+    DatabaseModule,
     AnalysesModule,
     AccountsModule,
     StatsModule,

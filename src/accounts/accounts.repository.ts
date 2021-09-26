@@ -15,6 +15,10 @@ export class AccountsRepository {
       .select('-__v -_id -uuid -summonerId');
   }
 
+  async findOneFull(account: Partial<Account>): Promise<Account> {
+    return this.accountModel.findOne(account).select('-__v -_id');
+  }
+
   async findVerifiedAccount(discordId: string): Promise<Account> {
     return this.accountModel
       .findOne({ discordId: discordId, verified: true })

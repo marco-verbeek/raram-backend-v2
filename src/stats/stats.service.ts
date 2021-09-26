@@ -32,6 +32,7 @@ export class StatsService {
 
   async getAnalyzedGameIds(): Promise<number[]> {
     const stats = await this.statsRepository.getToolStats();
+
     return stats.analyzedGameIds;
   }
 

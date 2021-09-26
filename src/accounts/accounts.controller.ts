@@ -58,7 +58,9 @@ export class AccountsController {
 
   @Get('/verify/:discordId')
   async verificationById(@Param('discordId') discordId: string) {
-    const account: Account = await this.accountsService.getAccount(discordId);
+    const account: Account = await this.accountsService.getFullAccount(
+      discordId,
+    );
 
     if (account === null) {
       return {
@@ -73,7 +75,7 @@ export class AccountsController {
   }
 
   @Get(':discordId')
-  async getProfile(@Param('discordId') discordId: string) {
+  async getAccount(@Param('discordId') discordId: string) {
     return this.accountsService.getAccount(discordId);
   }
 

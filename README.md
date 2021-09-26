@@ -17,13 +17,7 @@ Points are calculated using:
 
 ## Endpoints <br>
 
-GET /accounts/verify/:discordId <br>
-GET /accounts/verify/:discordId/:summonerName <br>
-
-GET /accounts/:discordId <br>
-GET /accounts/:discordId/lastgame <br>
-
-GET /analyses/:gameId
+See /api for OpenAPI documentation
 
 ## Description
 
