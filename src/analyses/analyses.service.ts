@@ -11,12 +11,14 @@ import { AccountsService } from '../accounts/accounts.service';
 import { Account } from '../accounts/schemas/account.schema';
 import { StatsService } from '../stats/stats.service';
 import { MatchV5DTOs } from 'twisted/dist/models-dto/matches/match-v5';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AnalysesService {
   constructor(
     private readonly accountsService: AccountsService,
     private readonly statsService: StatsService,
+    private readonly configService: ConfigService,
   ) {}
   LeagueAPI = new LolApi();
 
@@ -291,7 +293,9 @@ export class AnalysesService {
         damageTaken: player.damageTaken,
         healed: player.healed,
       });
-      console.log('Updated stats for ' + player.summonerName);
+
+      if (this.configService.get<string>('NODE_ENV') === 'development')
+        console.log('Updated stats for ' + player.summonerName);
 
       await this.statsService.updateChampionStats(player.champion, {
         playedBySummonerName: player.summonerName,
@@ -310,7 +314,9 @@ export class AnalysesService {
         totalDamageTaken: player.damageTaken,
         totalHealed: player.healed,
       });
-      console.log('Update champion stats for ' + player.champion);
+
+      if (this.configService.get<string>('NODE_ENV') === 'development')
+        console.log('Update champion stats for ' + player.champion);
     }
   };
 

@@ -1,5 +1,5 @@
 export interface Player {
-  accountId: string;
+  accountId?: string;
   summonerName: string;
   championId: number;
   champion: string;
@@ -26,11 +26,11 @@ export interface Player {
   teamComparedDamageDone: number;
   teamComparedDamageTaken: number;
   teamComparedHealed: number;
-  KPGain: number;
-  deathsGain: number;
-  damageDoneGain: number;
-  damageTakenGain: number;
-  healedGain: number;
-  lpGain: number;
-  leaguePoints: number;
+  KPGain?: number;
+  deathsGain?: number;
+  damageDoneGain?: number;
+  damageTakenGain?: number;
+  healedGain?: number;
+  lpGain?: number;
+  leaguePoints?: number;
 }

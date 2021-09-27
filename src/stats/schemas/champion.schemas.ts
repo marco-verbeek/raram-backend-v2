@@ -9,7 +9,7 @@ export class Champion {
   name!: string;
 
   @Prop({ type: Map })
-  players: { type: Map<string, Array<number>> };
+  players: any;
 
   @Prop({ default: 0 })
   gamesPlayed: number;
