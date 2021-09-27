@@ -26,5 +26,29 @@ export const accountsStub = (): Account[] => {
       playerUUID: '',
       summonerId: '',
     },
+    {
+      discordId: '111111111111111111',
+      summonerName: 'Callback Cat',
+      verified: true,
+      uuid: '',
+      playerUUID: '',
+      summonerId: '',
+    },
+    {
+      discordId: '22222222222222222',
+      summonerName: 'Hypertext Assassin',
+      verified: true,
+      uuid: '',
+      playerUUID: '',
+      summonerId: '',
+    },
+    {
+      discordId: '33333333333333333',
+      summonerName: 'Runtime Terror',
+      verified: true,
+      uuid: '',
+      playerUUID: '',
+      summonerId: '',
+    },
   ];
 };
