@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  dev:
+    container_name: raram-backend-dev
+    image: raram-backend-prod:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    environment:
+      - NODE_ENV=development
+      - MONGODB_TEST_URI=mongodb://mongodb:27017/test
+      - MONGODB_DEV_URI=mongodb://mongodb:27017/dev
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - api-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+
+  prod:
+    container_name: raram-backend-prod
+    image: raram-backend-prod:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    environment:
+      - NODE_ENV=production
+      - MONGODB_PROD_URI=mongodb://mongodb:27017/prod
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - api-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - api-network
+    ports:
+      - 27017:27017
+
+networks:
+  api-network:
+
+volumes:
+  mongodata:
