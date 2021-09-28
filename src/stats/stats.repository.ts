@@ -22,7 +22,9 @@ export class StatsRepository {
   }
 
   async findPlayer(discordId: string): Promise<Player> {
-    return this.playerStatsModel.findOne({ discordId }).select('-__v -_id');
+    return this.playerStatsModel
+      .findOneAndUpdate({ discordId }, {}, { new: true, upsert: true })
+      .select('-__v -_id');
   }
 
   async findTop5HighestRankingPlayers(): Promise<Player[]> {

@@ -10,17 +10,10 @@ import { UpdateChampStatsDto } from './dto/update-champ-stats.dto';
 export class StatsService {
   constructor(private readonly statsRepository: StatsRepository) {}
 
-  // TODO: createAccountStats and getAccountStats should be merged ?
-  async createAccountStats(discordId: string): Promise<Player> {
-    return this.getAccountStats(discordId);
-  }
-
   async getAccountStats(discordId: string): Promise<Player> {
     const stats = await this.statsRepository.findPlayer(discordId);
 
-    return stats !== null
-      ? stats
-      : this.statsRepository.createPlayer(discordId);
+    return stats;
   }
 
   async updateAccountStats(
