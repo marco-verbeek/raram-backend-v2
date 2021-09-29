@@ -9,6 +9,8 @@ services:
       target: development
       dockerfile: ./Dockerfile
     command: npm run start:debug
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
       - MONGODB_TEST_URI=mongodb://mongodb:27017/test
@@ -33,6 +35,8 @@ services:
       target: production
       dockerfile: ./Dockerfile
     command: npm run start:prod
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - MONGODB_PROD_URI=mongodb://mongodb:27017/prod
@@ -66,6 +70,8 @@ services:
       context: ../raram-bot/
       dockerfile: ../raram-bot/Dockerfile
     command: npm run start
+    env_file:
+      - ../raram-bot/.env
     networks:
       - api-network
     restart: unless-stopped
