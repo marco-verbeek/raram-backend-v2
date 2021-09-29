@@ -59,6 +59,17 @@ services:
     ports:
       - 27017:27017
 
+  bot:
+    container_name: raram-bot
+    image: raram-bot:1.0.0
+    build:
+      context: ../raram-bot/
+      dockerfile: ../raram-bot/Dockerfile
+    command: npm run start
+    networks:
+      - api-network
+    restart: unless-stopped
+
 networks:
   api-network:
 
