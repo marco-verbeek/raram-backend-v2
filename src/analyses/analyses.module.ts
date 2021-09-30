@@ -9,5 +9,6 @@ import { StatsModule } from '../stats/stats.module';
   imports: [AccountsModule, StatsModule],
   controllers: [AnalysesController],
   providers: [AnalysesService],
+  exports: [AnalysesService],
 })
 export class AnalysesModule {}

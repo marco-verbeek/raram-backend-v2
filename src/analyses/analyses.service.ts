@@ -194,6 +194,12 @@ export class AnalysesService {
       // Only calculate rank-related information if the player has a rARAM account.
       if (account === null) continue;
 
+      // If not in queue, player does not want this game to count.
+      if (!account.inQueue) continue;
+
+      // queueLast greater than gameCreation means the queue started after this game was played.
+      if (account.queueLast > matchDataInfo.gameCreation) continue;
+
       player['KPGain'] = this.calculateGain(player['teamComparedKP'], 10, 2);
       player['deathsGain'] = this.calculateGain(
         player['teamComparedDeaths'],
@@ -269,6 +275,16 @@ export class AnalysesService {
         );
 
       if (account === null) continue;
+
+      // If not in queue, player does not want this game to count.
+      if (!account.inQueue) continue;
+
+      // queueLast greater than gameCreation means the queue started after this game was played.
+      if (account.queueLast > analysis.game.gameCreation) continue;
+
+      await this.accountsService.updateQueue(account.discordId, true);
+      if (this.configService.get<string>('NODE_ENV') === 'development')
+        console.log('Updated queue for ' + player.summonerName);
 
       await this.statsService.updateAccountStats(account.discordId, {
         win: player.teamId === winningTeamId,

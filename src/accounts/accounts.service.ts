@@ -95,4 +95,11 @@ export class AccountsService {
 
     return { matchId: matchListing.response[0] };
   }
+
+  async updateQueue(discordId: string, queueStatus: boolean) {
+    return this.accountsRepository.findOneAndUpdate(discordId, {
+      inQueue: queueStatus,
+      queueLast: Date.now(),
+    });
+  }
 }

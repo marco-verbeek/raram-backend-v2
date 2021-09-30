@@ -5,6 +5,8 @@ import { StatsModule } from './stats/stats.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { QueuesController } from './queues/queues.controller';
+import { QueuesModule } from './queues/queues.module';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     AccountsModule,
     StatsModule,
     LeaderboardsModule,
+    QueuesModule,
   ],
 })
 export class AppModule {}

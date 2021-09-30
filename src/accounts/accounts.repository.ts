@@ -53,6 +53,6 @@ export class AccountsRepository {
       .findOneAndUpdate({ discordId: discordId }, account, {
         new: true,
       })
-      .select('-__v -_id');
+      .select('-__v -_id -uuid -summonerId');
   }
 }

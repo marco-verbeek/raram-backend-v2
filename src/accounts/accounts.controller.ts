@@ -15,7 +15,9 @@ export class AccountsController {
     @Param('discordId') discordId: string,
     @Param('summonerName') summonerName: string,
   ) {
-    const account: Account = await this.accountsService.getAccount(discordId);
+    const account: Account = await this.accountsService.getFullAccount(
+      discordId,
+    );
 
     // Cannot link account to an already-linked LoL account.
     const accountsWithName =

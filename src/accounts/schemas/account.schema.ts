@@ -17,11 +17,17 @@ export class Account {
   @Prop({ required: true })
   playerUUID!: string;
 
-  @Prop()
+  @Prop({ default: false })
   verified: boolean;
 
   @Prop({ required: true })
   uuid: string;
+
+  @Prop({ default: false })
+  inQueue?: boolean;
+
+  @Prop()
+  queueLast?: number;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);
