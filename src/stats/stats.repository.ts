@@ -170,7 +170,7 @@ export class StatsRepository {
   }
 
   async champStatsExist(name: string): Promise<boolean> {
-    return await this.championStatsModel.exists({ name });
+    return this.championStatsModel.exists({ name });
   }
 
   async createChampionStats(name: string): Promise<Champion> {

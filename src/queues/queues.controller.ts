@@ -29,6 +29,7 @@ export class QueuesController {
 
       const gameIdFromRegionalString = parseInt(
         lastGameReq.matchId.split('_')[1],
+        10,
       );
 
       if (
@@ -62,7 +63,7 @@ export class QueuesController {
         HttpStatus.METHOD_NOT_ALLOWED,
       );
 
-    return await this.accountsService.updateQueue(discordId, true);
+    return this.accountsService.updateQueue(discordId, true);
   }
 
   @Get('/stop/:discordId')
@@ -88,6 +89,6 @@ export class QueuesController {
     if (lastGameReq !== undefined && lastGameReq.matchId)
       await this.analysesService.analyseGameWithId(lastGameReq.matchId);
 
-    return await this.accountsService.updateQueue(discordId, false);
+    return this.accountsService.updateQueue(discordId, false);
   }
 }
