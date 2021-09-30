@@ -8,7 +8,6 @@ import { RegionGroups, Regions } from 'twisted/dist/constants';
 @Injectable()
 export class AccountsService {
   constructor(private readonly accountsRepository: AccountsRepository) {}
-
   LeagueAPI = new LolApi();
 
   async getAccount(discordId: string): Promise<Account> {
@@ -29,6 +28,10 @@ export class AccountsService {
 
   async getAccountsBySummonerName(summonerName: string): Promise<Account[]> {
     return this.accountsRepository.findMany({ summonerName });
+  }
+
+  async getAccountsInQueue(): Promise<Account[]> {
+    return this.accountsRepository.findMany({ verified: true, inQueue: true });
   }
 
   async createAccount(
@@ -74,6 +77,9 @@ export class AccountsService {
     });
   }
 
+  /**
+   * Note: this function returns a 'matchId' in JSON. This is wrongly named ! The correct name would be 'gameId' instead.
+   */
   async getLastGameId(discordId: string) {
     const profile = await this.getAccount(discordId);
 
@@ -100,6 +106,12 @@ export class AccountsService {
     return this.accountsRepository.findOneAndUpdate(discordId, {
       inQueue: queueStatus,
       queueLast: Date.now(),
+    });
+  }
+
+  async setLastAnalyzedGameId(discordId: string, gameId: number) {
+    return this.accountsRepository.findOneAndUpdate(discordId, {
+      lastAnalyzedGameId: gameId,
     });
   }
 }

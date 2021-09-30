@@ -28,6 +28,9 @@ export class Account {
 
   @Prop()
   queueLast?: number;
+
+  @Prop()
+  lastAnalyzedGameId?: number;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

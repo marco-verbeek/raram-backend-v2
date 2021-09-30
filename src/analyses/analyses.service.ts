@@ -282,6 +282,10 @@ export class AnalysesService {
       // queueLast greater than gameCreation means the queue started after this game was played.
       if (account.queueLast > analysis.game.gameCreation) continue;
 
+      await this.accountsService.setLastAnalyzedGameId(
+        account.discordId,
+        analysis.game.gameId,
+      );
       await this.accountsService.updateQueue(account.discordId, true);
       if (this.configService.get<string>('NODE_ENV') === 'development')
         console.log('Updated queue for ' + player.summonerName);
@@ -332,7 +336,7 @@ export class AnalysesService {
       });
 
       if (this.configService.get<string>('NODE_ENV') === 'development')
-        console.log('Update champion stats for ' + player.champion);
+        console.log('Updated stats for ' + player.champion);
     }
   };
 

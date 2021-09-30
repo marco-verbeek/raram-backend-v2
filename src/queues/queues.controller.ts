@@ -18,7 +18,27 @@ export class QueuesController {
   ) {}
 
   @Get()
-  async queueCore() {}
+  async queueCore() {
+    const accountsInQueue = await this.accountsService.getAccountsInQueue();
+    if (accountsInQueue.length === 0) return;
+
+    for (const account of accountsInQueue) {
+      const lastGameReq = await this.accountsService.getLastGameId(
+        account.discordId,
+      );
+
+      const gameIdFromRegionalString = parseInt(
+        lastGameReq.matchId.split('_')[1],
+      );
+
+      if (
+        account.lastAnalyzedGameId === undefined ||
+        gameIdFromRegionalString !== account.lastAnalyzedGameId
+      ) {
+        this.analysesService.analyseGameWithId(lastGameReq.matchId);
+      }
+    }
+  }
 
   @Get('/start/:discordId')
   async startQueue(@Param('discordId') discordId: string) {
