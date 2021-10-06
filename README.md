@@ -3,11 +3,22 @@
 <br>Spare-time created tool that analyses League of Legends ARAM games. Uses the official Riot API in order to get match data.
 </p>
 
+## Example usage of the backend's data
+| Game Analysis | Leaderboards |
+|---|---|
+| <img src="https://github.com/marco-verbeek/raram-bot-v2/blob/master/data/analysis_demo.png" width="450" alt="Demo: Game Analysis"> | <img src="https://github.com/marco-verbeek/raram-bot-v2/blob/master/data/leaderboards_demo.png" width="450" alt="Demo: Leaderboards"> |
+
+| rARAM Profiles | Champion Stats |
+|---|---|
+| <img src="https://github.com/marco-verbeek/raram-bot-v2/blob/master/data/profile_demo.png" width="450" alt="Demo: Profile Stats"> | <img src="https://github.com/marco-verbeek/raram-bot-v2/blob/master/data/champ_stats_demo.png" width="450" alt="Demo: Champion Stats"> | 
+
+Note: these screenshots come from <a target="_blank" href="https://github.com/marco-verbeek/raram-bot-v2">rARAM-bot-v2</a>. 
+
 ## Account Verification
 
 Account verification using players' DiscordId and Riot's official Third Party Code endpoint.
 
-## Point System
+## Points System
 
 Points are calculated using:
 
